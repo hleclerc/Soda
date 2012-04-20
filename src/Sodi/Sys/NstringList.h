@@ -23,7 +23,8 @@ public:
 
     int size() const; ///< nb nstrings
 
-    Item *lmod;
+    Item *lmod; ///< first "recently" created Nstring
+
 protected:
     Item *hash_list[ size_hash_list ];
     int nb_nstrings;

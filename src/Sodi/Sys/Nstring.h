@@ -1,6 +1,8 @@
 #ifndef NSTRING_H
 #define NSTRING_H
 
+#include "Math.h"
+
 /**
 
 */
