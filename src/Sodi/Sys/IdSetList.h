@@ -38,7 +38,7 @@ public:
             lmod = res;
         }
         return res;
-    1}
+    }
 
     const Item *lmod; ///< last created Item
     const Item *no_Id; ///< item with nothing (no Id)

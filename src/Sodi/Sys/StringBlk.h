@@ -55,6 +55,11 @@ public:
         return res;
     }
 
+    template<class OS>
+    void write_str( OS &out ) const {
+        out.write( _data, _size );
+    }
+
 protected:
     int _size;
     const char *_data;

@@ -7,9 +7,6 @@ class Session;
 
 /**
 */
-class SessionSet : public IdSet<Session *,1,Database *> {
-public:
-    typedef IdSetList<Session *,1,Database *> List;
-};
+typedef IdSet<Session *,1,Database *> SessionSet;
 
 #endif // SESSIONSET_H

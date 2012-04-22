@@ -14,7 +14,8 @@
 template< class T, int n = 1, class ExtraAttr = int >
 class IdSet {
 public:
-    typedef typename IdSetList< T, n, ExtraAttr >::Item Item;
+    typedef IdSetList< T, n, ExtraAttr > List;
+    typedef typename List::Item Item;
 
     IdSet( const Item *_ptr = 0 ) : _ptr( _ptr ) {}
 
@@ -27,7 +28,10 @@ public:
     IdSet &operator<<( T id ) { return add( id, 0 ); } ///< add id
     IdSet &operator>>( T id ) { return rem( id, 0 ); } ///< rem id
 
+    const ExtraAttr &operator*() const { return _ptr->orig->extra; }
     ExtraAttr &operator*() { return _ptr->orig->extra; }
+
+    const ExtraAttr &operator->() const { return _ptr->orig->extra; }
     ExtraAttr &operator->() { return _ptr->orig->extra; }
 
     IdSet &add( T id, int ns ) {
