@@ -1,5 +1,5 @@
-#include <Sodi/Sys/NstringList.h>
-#include <Sodi/Sys/Stream.h>
+#include <Soda/Sys/NstringList.h>
+#include <Soda/Sys/Stream.h>
 
 int main() {
     NstringList nl;
