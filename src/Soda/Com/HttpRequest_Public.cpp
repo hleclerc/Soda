@@ -57,7 +57,7 @@ int HttpRequest_Public::cmd_end() {
 }
 
 void HttpRequest_Public::cmd_creation( const String &type, ST tmp_id, const String &data ) {
-    if ( session ) {
+    if ( session and tmp_id & 3 ) {
         Model *res = session->factory( session->db->nstring_list( type.c_str() ), data );
         out << "FileSystem._tmp_id_to_real( " << tmp_id << ", " << res << " );\n";
         tmp_map.tmp_map[ tmp_id ] = res;
