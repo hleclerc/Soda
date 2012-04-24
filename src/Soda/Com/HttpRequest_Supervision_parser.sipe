@@ -1,0 +1,9 @@
+gurl = 
+    ( '/reload ' { loop->update();        } ) |
+    ( '/exit '   { loop->ev_loop->stop(); } ) |
+    ( '/ '       { index();               } ) |
+    none
+
+get = 'GET ' gurl
+
+main = get | { error_400(); }
