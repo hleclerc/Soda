@@ -57,9 +57,15 @@ public:
         return *this;
     }
 
+    MP set( const TmpModelMap &mm, StringBlk data ) {
+        if ( m and m->rights.has( _user(), WR ) and m->_set( mm, data ) )
+            _add_to_mod_list( m );
+        return *this;
+    }
+
     // factories
     Model *factory( BinInp &inp, int type_dump, RightSet rights, SessionSet watching_sessions );
-    Model *factory( Nstring type, const std::string &data );
+    Model *factory( Nstring type );
     Model *factory( const std::string &val );
     Model *factory( Model *m ) { return m; }
     Model *factory( New_Directory );

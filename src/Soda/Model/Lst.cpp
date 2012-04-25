@@ -27,12 +27,6 @@ void Lst::map_ptr( const MapRead &map_read ) {
             _data[ i ]->map_ptr( map_read );
 }
 
-void Lst::map_ptr( const TmpModelMap &tmp_map, Session *s ) {
-    for( int i = 0; i < _data.size(); ++i )
-        if ( not ( _data[ i ] = tmp_map( _data[ i ], s ) ) )
-            _data.remove( i-- );
-}
-
 void Lst::write_str( Stream &out ) const {
     for( int i = 0; i < _data.size(); ++i ) {
         _data[ i ]->write_str( out );
@@ -79,9 +73,26 @@ void Lst::_write_njs( Stream &out, int var, Session *session ) const {
     }
 }
 
-bool Lst::_set( StringBlk data ) {
-    TODO;
-    return false;
+bool Lst::_set( const TmpModelMap &mm, StringBlk n ) {
+    Vec<Model *> tmp;
+    while ( StringBlk p = n.split( ',' ) )
+        if ( Model *m = mm( p.atoi() ) )
+            tmp << m;
+    if ( _data == tmp )
+        return false;
+    _data = tmp;
+    return true;
+}
+
+bool Lst::_set( StringBlk n ) {
+    Vec<Model *> tmp;
+    while ( StringBlk p = n.split( ',' ) )
+        if ( Model *m = db()->model_allocator.check( (Model *)p.atoi() ) )
+            tmp << m;
+    if ( _data == tmp )
+        return false;
+    _data = tmp;
+    return true;
 }
 
 bool Lst::_push( Model *m ) {

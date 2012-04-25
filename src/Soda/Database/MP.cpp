@@ -73,10 +73,9 @@ MP MP::operator[]( Nstring path ) {
     return MP( s, m, path );
 }
 
-Model *MP::factory( Nstring type, const std::string &data ) {
+Model *MP::factory( Nstring type ) {
     #define DECL( M ) if ( type == NSTRING_##M ) { \
         M *res = s->db->model_allocator.factory( s->default_rights, s->default_watching_sessions ); \
-        res->_set( StringBlk( data.data(), data.size() ) ); \
         return s->db->add_to_mod_list( res, s ); \
     }
     #include "../Model/Model_decl.h"
@@ -84,7 +83,6 @@ Model *MP::factory( Nstring type, const std::string &data ) {
 
     // else -> ModelWithAttrAndName
     ModelWithAttrAndName *res = s->db->model_allocator.factory( s->default_rights, s->default_watching_sessions, type );
-    res->_set( StringBlk( data.data(), data.size() ) );
     return s->db->add_to_mod_list( res, s );
 }
 
@@ -156,12 +154,14 @@ User *MP::_user() {
 }
 
 MP MP::_create_attr( Model *p ) {
-    if ( b ) { // we have to create a new model from a StringBlk ?
-        if ( m and m->rights.has( s->user, WR ) and m->_add_attr( s, b, p ) )
-            s->db->add_to_mod_list( m, s );
-    } else if ( n ) { // we have to create a new model for a Nstring ?
-        if ( m and m->rights.has( s->user, WR ) and m->_add_attr( s, n, p ) )
-            s->db->add_to_mod_list( m, s );
+    if ( p ) {
+        if ( b ) { // we have to create a new model from a StringBlk ?
+            if ( m and m->rights.has( s->user, WR ) and m->_add_attr( s, b, p ) )
+                s->db->add_to_mod_list( m, s );
+        } else if ( n ) { // we have to create a new model for a Nstring ?
+            if ( m and m->rights.has( s->user, WR ) and m->_add_attr( s, n, p ) )
+                s->db->add_to_mod_list( m, s );
+        }
     }
     return MP( s, p );
 }

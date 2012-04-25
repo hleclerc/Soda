@@ -10,8 +10,8 @@ struct TmpModelMap {
 
     inline Model *operator()( ST ptr_model, Session *session ) const {
         if ( ptr_model & 3 ) {
-            TM::const_iterator iter = tmp_map.find( ptr_model );
-            return iter != tmp_map.end() ? iter->second : 0;
+            TM::const_iterator iter = data.find( ptr_model );
+            return iter != data.end() ? iter->second : 0;
         }
         return session->db->model_allocator.check( reinterpret_cast<Model *>( ptr_model ) );
     }
@@ -20,7 +20,7 @@ struct TmpModelMap {
         return operator()( (ST)ptr_model, session );
     }
 
-    TM tmp_map;
+    TM data;
 };
 
 #endif // TMPMODELMAP_H

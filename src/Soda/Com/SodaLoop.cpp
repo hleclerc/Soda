@@ -80,7 +80,7 @@ bool SodaLoop::timeout() {
             JavascriptSession *s = iter->second.beg;
             if ( s and o >= s->date_channel ) {
                 iter->second.pop_front();
-                s->rq_chan();
+                s->rq_chan_and_close_pc();
             } else
                 break;
         }

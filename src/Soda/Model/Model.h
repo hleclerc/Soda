@@ -53,7 +53,6 @@ public:
     virtual bool equal( StringBlk name ) const;
 
     virtual void map_ptr( const MapRead &map_read ) = 0; ///< fake ptrs (from file) to real ptrs
-    virtual void map_ptr( const TmpModelMap &tmp_map, Session *s ) = 0;
     virtual int type_dump() const = 0;
     virtual Nstring type() const = 0;
 
@@ -79,14 +78,16 @@ public:
 protected:
     friend class MP;
 
-    template<class T>
-    bool _set( const T & ) { return false; }
+    //template<class T>
+    //bool _set( const T & ) { return false; }
 
-    virtual bool _set( StringBlk data ) = 0;
+    virtual bool _set( const TmpModelMap &mm, StringBlk data ) = 0;
+    virtual bool _set( StringBlk data );
     virtual bool _set( Model *m );
-    virtual bool _set( SI32 val ) { return _set( SI64( val ) ); }
     virtual bool _set( SI64 val );
     virtual bool _set( FP64 val );
+
+    virtual bool _set( SI32 val ) { return _set( SI64( val ) ); }
 
     virtual bool _add_attr( Session *s, StringBlk name, Model *m );
     virtual bool _add_attr( Session *s, Nstring name, Model *m );

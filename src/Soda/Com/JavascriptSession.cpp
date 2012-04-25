@@ -10,7 +10,7 @@ void JavascriptSession::on_change( Model *m ) {
         m->write_ujs( push_channel ? push_channel->out : data_to_push, this );
 }
 
-void JavascriptSession::rq_chan() {
+void JavascriptSession::rq_chan_and_close_pc() {
     if ( push_channel ) {
         push_channel->rq_chan_and_close();
         delete push_channel;
@@ -19,5 +19,5 @@ void JavascriptSession::rq_chan() {
 }
 
 void JavascriptSession::end_round() {
-    rq_chan();
+    rq_chan_and_close_pc();
 }

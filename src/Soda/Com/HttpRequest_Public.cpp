@@ -43,9 +43,6 @@ void HttpRequest_Public::cmd_set_session( ST ptr_session ) {
 }
 
 int HttpRequest_Public::cmd_end() {
-    for( TmpModelMap::TM::iterator iter = tmp_map.tmp_map.begin(); iter != tmp_map.tmp_map.begin(); ++iter )
-        iter->second->map_ptr( tmp_map, session );
-
     // data preparation
     String res = out.str();
     char *data = (char *)res.data();
@@ -59,20 +56,19 @@ int HttpRequest_Public::cmd_end() {
     return OK;
 }
 
-void HttpRequest_Public::cmd_creation( const String &type, ST tmp_id, const String &data ) {
+//
+void HttpRequest_Public::cmd_creation( const String &type, ST tmp_id ) {
     if ( session and tmp_id & 3 ) {
-        Model *res = session->factory( session->db->nstring_list( type.c_str() ), data );
+        Model *res = session->factory( session->db->nstring_list( type.c_str() ) );
         out << "FileSystem._tmp_id_to_real( " << tmp_id << ", " << res << " );\n";
-        tmp_map.tmp_map[ tmp_id ] = res;
+        tmp_map.data[ tmp_id ] = res;
     }
 }
 
 void HttpRequest_Public::cmd_change( ST ptr_model, const String &data ) {
     if ( session ) {
-        if ( Model *m = tmp_map( ptr_model, session ) ) {
-            MP mp( session, m );
-            mp = StringBlk( data.data(), data.size() );
-        }
+        MP mp( session, tmp_map( ptr_model, session ) );
+        mp.set( tmp_map, StringBlk( data.data(), data.size() ) );
     }
 }
 
@@ -88,17 +84,8 @@ void HttpRequest_Public::cmd_load( const String &path, int num_callback ) {
 }
 
 void HttpRequest_Public::cmd_save( const String &path, ST ptr_model ) {
-    if ( not session ) {
-        PRINT( __LINE__ );
-        if ( Model *m = tmp_map( ptr_model, session ) ) {
-            PRINT( __LINE__ );
-            if ( m->rights.has( session->user, RD ) ) {
-                PRINT( __LINE__ );
-                MP mp = session->operator[]( StringBlk( path.data(), path.size() ) );
-                mp = m;
-            }
-        }
-    }
+    if ( session )
+        session->operator[]( StringBlk( path.data(), path.size() ) ) = tmp_map( ptr_model, session );
 }
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {
@@ -109,7 +96,7 @@ void HttpRequest_Public::mk_chan( ST ptr_session ) {
         String s = session->data_to_push.str();
         if ( s.size() ) {
             out << s;
-            session->rq_chan();
+            session->rq_chan_and_close_pc();
         } else
             loop->add_timeout( 30, session );
     }

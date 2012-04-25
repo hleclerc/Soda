@@ -47,12 +47,6 @@ void ModelWithAttr::map_ptr( const MapRead &map_read ) {
     _map_ptr( map_read );
 }
 
-void ModelWithAttr::map_ptr( const TmpModelMap &tmp_map, Session *s ) {
-    for( int i = 0; i < _data.size(); ++i )
-        if ( not ( _data[ i ].val = tmp_map( _data[ i ].val, s ) ) )
-            _data.remove( i-- );
-}
-
 
 void ModelWithAttr::write_ujs( Stream &out, Session *session ) const {
     // need some object creation ?
@@ -88,6 +82,24 @@ void ModelWithAttr::write_dmp( BinOut &out ) const {
         out << _data[ i ].key;
         out << _data[ i ].val;
     }
+}
+
+bool ModelWithAttr::_set( const TmpModelMap &mm, StringBlk data ) {
+    Vec<Item> tmp;
+    while ( StringBlk p = data.split( ',' ) ) {
+        StringBlk k = p.split( ':' );
+        if ( p and k ) {
+            if ( Model *m = db()->model_allocator.check( (Model *)p.atoi() ) ) {
+                Item &res = tmp.push_back();
+                res.key = db()->nstring_list( k );
+                res.val = m;
+            }
+        }
+    }
+    if ( _data == tmp )
+        return false;
+    _data = tmp;
+    return true;
 }
 
 bool ModelWithAttr::_set( StringBlk data ) {

@@ -11,7 +11,7 @@ public:
     JavascriptSession( Database *db, User *user, int num_inst );
     virtual void on_change( Model *m );
     virtual void end_round();
-    void rq_chan();
+    void rq_chan_and_close_pc();
 
     // for push update
     JavascriptSession *next;

@@ -22,9 +22,6 @@ void Str::map_ptr( const MapRead &map_read ) {
     rights = map_read[ rights ];
 }
 
-void Str::map_ptr( const TmpModelMap &tmp_map, Session *s ) {
-}
-
 void Str::write_str( Stream &out ) const {
     out << _data;
 }

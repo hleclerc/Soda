@@ -22,12 +22,12 @@ public:
     virtual Model *attr( StringBlk name ) const;
 
     virtual void map_ptr( const MapRead &map_read );
-    virtual void map_ptr( const TmpModelMap &tmp_map, Session *s );
     virtual void write_str( Stream &out ) const;
     virtual void write_dmp( BinOut &out ) const;
     virtual void write_ujs( Stream &out, Session *s ) const;
 
 protected:
+    virtual bool _set( const TmpModelMap &mm, StringBlk data );
     virtual bool _set( StringBlk data );
 
     virtual bool _add_attr( Session *s, StringBlk name, Model *m );
