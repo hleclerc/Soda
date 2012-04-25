@@ -10,6 +10,7 @@ class JavascriptSession : public Session {
 public:
     JavascriptSession( Database *db, User *user, int num_inst );
     virtual void on_change( Model *m );
+    virtual void end_round();
     void rq_chan();
 
     // for push update

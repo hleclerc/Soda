@@ -85,9 +85,17 @@ void HttpRequest_Public::cmd_load( const String &path, int num_callback ) {
 }
 
 void HttpRequest_Public::cmd_save( const String &path, ST ptr_model ) {
-    if ( session )
-        if ( Model *m = tmp_map( ptr_model, session ) )
-            session->operator[]( StringBlk( path.data(), path.size() ) ) = m;
+    if ( not session ) {
+        PRINT( __LINE__ );
+        if ( Model *m = tmp_map( ptr_model, session ) ) {
+            PRINT( __LINE__ );
+            if ( m->rights.has( session->user, RD ) ) {
+                PRINT( __LINE__ );
+                MP mp = session->operator[]( path );
+                mp = m;
+            }
+        }
+    }
 }
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {
@@ -104,7 +112,7 @@ void HttpRequest_Public::mk_chan( ST ptr_session ) {
     }
 }
 
-void HttpRequest_Public::rq_chan() {
+void HttpRequest_Public::rq_chan_and_close() {
     oun << "FileSystem._insts[ " << session->num_inst << " ].make_channel();";
     cmd_end();
 }

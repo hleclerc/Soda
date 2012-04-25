@@ -27,7 +27,7 @@ public:
     int  cmd_end();
 
     void mk_chan( ST ptr_session ); ///< we want *this to be a push channel
-    void rq_chan(); /// request for a channnel (to session)
+    void rq_chan_and_close(); /// request for a channnel (to session)
 
     // helpers for output
     StreamSepMaker<std::ostringstream> oun;

@@ -47,7 +47,7 @@ void RootSession::on_change( Model *m ) {
 }
 
 void RootSession::end_round() {
-    // write new Nstring
+    // dump new Nstring
     for( const NstringList::Item *n = db->nstring_list.lmod; n; n = n->pmod ) {
         dump << (int)Model::_Nstring;
         dump << n;
@@ -55,7 +55,7 @@ void RootSession::end_round() {
     }
     db->nstring_list.lmod = 0;
 
-    // write new Rights
+    // dump new Rights
     for( const RightSet::Item *n = db->right_set_list.lmod; n; n = n->pmod ) {
         dump << (int)Model::_Rights;
         dump << n;

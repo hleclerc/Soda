@@ -46,6 +46,18 @@ void ModelWithAttr::map_ptr( const MapRead &map_read ) {
     _map_ptr( map_read );
 }
 
+void ModelWithAttr::write_ujs( Stream &out, Session *session ) const {
+    // need some object creation ?
+    for( int i = 0; i < _data.size(); ++i )
+        if ( not _data[ i ].val->watching_sessions.has( session ) )
+            _data[ i ].val->write_njs( out, 0, session );
+    // Lst instructions
+    out << "FileSystem._objects[ " << this << " ].set_attr( {\n";
+    for( int i = 0; i < _data.size(); ++i )
+        out << "  " << _data[ i ].key << ": FileSystem._objects[ " << _data[ i ].val << " ],\n";
+    out << "} );\n";
+}
+
 void ModelWithAttr::_map_ptr( const MapRead &map_read ) {
     rights = map_read[ rights ];
     for( int i = 0; i < _data.size(); ++i ) {

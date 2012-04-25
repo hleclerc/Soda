@@ -40,6 +40,18 @@ void Lst::write_dmp( BinOut &out ) const {
         out << _data[ i ];
 }
 
+void Lst::write_ujs( Stream &out, Session *session ) const {
+    // need creation ?
+    for( int i = 0; i < _data.size(); ++i )
+        if ( not _data[ i ]->watching_sessions.has( session ) )
+            _data[ i ]->write_njs( out, 0, session );
+    // Lst instructions
+    out << "var tmp = FileSystem._objects[ " << this << " ];\n";
+    for( int i = 0; i < _data.size(); ++i )
+        out << "tmp.set_or_push( " << i << ", FileSystem._objects[ " << _data[ i ] << " ] );\n";
+    out << "tmp.trim( " << _data.size() << " );\n";
+}
+
 Nstring Lst::type() const {
     return NSTRING_Lst;
 }

@@ -44,8 +44,11 @@ void Database::end_round() {
     mod_list = 0;
 
     // sessions that have something to do
-    for( Session *s = sod_list; s; s = s->next_sod )
+    for( Session *s = sod_list; s; s = s->next_sod ) {
         s->end_round();
+
+        s->in_sod = false;
+    }
     sod_list = 0;
 }
 

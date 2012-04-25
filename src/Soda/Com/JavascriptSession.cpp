@@ -6,12 +6,18 @@ JavascriptSession::JavascriptSession( Database *db, User *user, int num_inst ) :
 }
 
 void JavascriptSession::on_change( Model *m ) {
+    if ( m->mod_session != this )
+        m->write_ujs( push_channel ? push_channel->out : data_to_push, this );
 }
 
 void JavascriptSession::rq_chan() {
     if ( push_channel ) {
-        push_channel->rq_chan();
+        push_channel->rq_chan_and_close();
         delete push_channel;
         push_channel = 0;
     }
+}
+
+void JavascriptSession::end_round() {
+    rq_chan();
 }
