@@ -20,6 +20,9 @@ void Val::map_ptr( const MapRead &map_read ) {
     rights = map_read[ rights ];
 }
 
+void Val::map_ptr( const TmpModelMap &, Session * ) {
+}
+
 void Val::write_str( Stream &out ) const {
     out << man;
     if ( exp )

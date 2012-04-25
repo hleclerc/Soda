@@ -1,3 +1,4 @@
+#include "../Database/TmpModelMap.h"
 #include "../Database/Database.h"
 #include "../Database/MapRead.h"
 #include "../Sys/BinInp.h"
@@ -45,6 +46,13 @@ void ModelWithAttr::map_ptr( const MapRead &map_read ) {
 
     _map_ptr( map_read );
 }
+
+void ModelWithAttr::map_ptr( const TmpModelMap &tmp_map, Session *s ) {
+    for( int i = 0; i < _data.size(); ++i )
+        if ( not ( _data[ i ].val = tmp_map( _data[ i ].val, s ) ) )
+            _data.remove( i-- );
+}
+
 
 void ModelWithAttr::write_ujs( Stream &out, Session *session ) const {
     // need some object creation ?

@@ -1,3 +1,4 @@
+#include "../Database/TmpModelMap.h"
 #include "../Database/MapRead.h"
 #include "../Sys/UsualStrings.h"
 #include "../Sys/BinInp.h"
@@ -24,6 +25,12 @@ void Lst::map_ptr( const MapRead &map_read ) {
     for( int i = 0; i < _data.size(); ++i )
         if ( ( _data[ i ] = map_read[ _data[ i ] ] ) )
             _data[ i ]->map_ptr( map_read );
+}
+
+void Lst::map_ptr( const TmpModelMap &tmp_map, Session *s ) {
+    for( int i = 0; i < _data.size(); ++i )
+        if ( not ( _data[ i ] = tmp_map( _data[ i ], s ) ) )
+            _data.remove( i-- );
 }
 
 void Lst::write_str( Stream &out ) const {

@@ -43,6 +43,9 @@ void HttpRequest_Public::cmd_set_session( ST ptr_session ) {
 }
 
 int HttpRequest_Public::cmd_end() {
+    for( TmpModelMap::TM::iterator iter = tmp_map.tmp_map.begin(); iter != tmp_map.tmp_map.begin(); ++iter )
+        iter->second->map_ptr( tmp_map, session );
+
     // data preparation
     String res = out.str();
     char *data = (char *)res.data();
@@ -91,7 +94,7 @@ void HttpRequest_Public::cmd_save( const String &path, ST ptr_model ) {
             PRINT( __LINE__ );
             if ( m->rights.has( session->user, RD ) ) {
                 PRINT( __LINE__ );
-                MP mp = session->operator[]( path );
+                MP mp = session->operator[]( StringBlk( path.data(), path.size() ) );
                 mp = m;
             }
         }
