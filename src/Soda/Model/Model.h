@@ -53,6 +53,7 @@ public:
     virtual bool equal( StringBlk name ) const;
 
     virtual void map_ptr( const MapRead &map_read ) = 0; ///< fake ptrs (from file) to real ptrs
+    virtual void map_ptr( const TmpModelMap &tmp_map, Session *s ) = 0;
     virtual int type_dump() const = 0;
     virtual Nstring type() const = 0;
 

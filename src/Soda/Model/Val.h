@@ -10,6 +10,7 @@ public:
     Val( RightSet rights, SessionSet watching_sessions, SI64 man = 0, SI32 exp = 0 );
     Val( BinInp *inp, RightSet rights, SessionSet watching_sessions );
     virtual void map_ptr( const MapRead &map_read );
+    virtual void map_ptr( const TmpModelMap &tmp_map, Session *s );
     virtual int type_dump() const { return _Val; }
     virtual void write_str( Stream &out ) const;
     virtual void write_dmp( BinOut &out ) const;
