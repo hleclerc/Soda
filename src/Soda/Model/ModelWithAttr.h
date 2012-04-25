@@ -24,6 +24,7 @@ public:
     virtual void map_ptr( const MapRead &map_read );
     virtual void write_str( Stream &out ) const;
     virtual void write_dmp( BinOut &out ) const;
+    virtual void write_ujs( Stream &out, Session *s ) const;
 
 protected:
     virtual bool _set( StringBlk data );

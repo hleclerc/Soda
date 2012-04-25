@@ -26,6 +26,10 @@ void Str::write_str( Stream &out ) const {
     out << _data;
 }
 
+void Str::write_ujs( Stream &out, Session * ) const {
+    out << "FileSystem._objects[ " << this << " ].set( decodeURIComponent( '" << url_encode( _data ) << "' ), false );\n";
+}
+
 void Str::write_dmp( BinOut &out ) const {
     out << (int)_data.size();
     out.write( _data.data(), _data.size() );

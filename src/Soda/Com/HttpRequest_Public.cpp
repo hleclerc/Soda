@@ -85,12 +85,14 @@ void HttpRequest_Public::cmd_load( const String &path, int num_callback ) {
 }
 
 void HttpRequest_Public::cmd_save( const String &path, ST ptr_model ) {
-    if ( not session )
-        return;
-    TODO;
-    //    if ( Model *m = ptr_model & 3 ? tmp_map[ ptr_model ] : session->db->checked_ptr( reinterpret_cast<Model *>( ptr_model ) ) ) {
-    //        (*session)[ (StringBlk)path.c_str() ] = m;
-    //    }
+    if ( not session ) {
+        if ( Model *m = tmp_map( ptr_model, session ) ) {
+            if ( m->rights.has( session->user, RD ) ) {
+                MP mp = session->operator[]( path );
+                mp = m;
+            }
+        }
+    }
 }
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {
@@ -107,7 +109,7 @@ void HttpRequest_Public::mk_chan( ST ptr_session ) {
     }
 }
 
-void HttpRequest_Public::rq_chan() {
+void HttpRequest_Public::rq_chan_and_close() {
     oun << "FileSystem._insts[ " << session->num_inst << " ].make_channel();";
     cmd_end();
 }

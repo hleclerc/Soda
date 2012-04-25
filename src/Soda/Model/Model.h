@@ -58,6 +58,7 @@ public:
 
     virtual void write_str( Stream &out ) const = 0;
     virtual void write_dmp( BinOut &out ) const = 0;
+    virtual void write_ujs( Stream &out, Session *s ) const = 0; ///< update object in javascript
     void write_njs( Stream &out, int var, Session *s ) const; ///< code for new v_$var javascript variable representing this
 
     void rm_inactive_sessions(); ///< rm from watching_sessions if s->inactive

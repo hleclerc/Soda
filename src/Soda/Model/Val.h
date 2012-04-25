@@ -13,6 +13,7 @@ public:
     virtual int type_dump() const { return _Val; }
     virtual void write_str( Stream &out ) const;
     virtual void write_dmp( BinOut &out ) const;
+    virtual void write_ujs( Stream &out, Session *s ) const;
     virtual Nstring type() const;
 
     virtual operator SI64() const;
