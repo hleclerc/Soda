@@ -85,12 +85,9 @@ void HttpRequest_Public::cmd_load( const String &path, int num_callback ) {
 }
 
 void HttpRequest_Public::cmd_save( const String &path, ST ptr_model ) {
-    if ( not session )
-        return;
-    TODO;
-    //    if ( Model *m = ptr_model & 3 ? tmp_map[ ptr_model ] : session->db->checked_ptr( reinterpret_cast<Model *>( ptr_model ) ) ) {
-    //        (*session)[ (StringBlk)path.c_str() ] = m;
-    //    }
+    if ( session )
+        if ( Model *m = tmp_map( ptr_model, session ) )
+            session->operator[]( StringBlk( path.data(), path.size() ) ) = m;
 }
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {
