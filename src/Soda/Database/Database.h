@@ -19,6 +19,7 @@ public:
     Session *add_to_sod_list( Session *s );
     void end_round();
 
+    SessionSet default_watching_sessions;
     SessionSet::List session_set_list;
     RightSet::List right_set_list;
     SecureAlloc session_allocator;

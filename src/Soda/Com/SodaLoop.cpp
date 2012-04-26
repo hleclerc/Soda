@@ -25,6 +25,7 @@ int SodaLoop::run() {
     std::auto_ptr<EventLoop  > auto_ptr_ev_loop ( ev_loop  = new EventLoop );
     std::auto_ptr<Database   > auto_ptr_database( database = new Database );
     root_session = database->session_allocator.factory( database, db_file );
+    database->default_watching_sessions << root_session;
 
     // fake listener (will be replaced by a generated dlopen'ed one)
     Listener_Factory<HttpRequest_Public,SodaLoop> f( port, this );

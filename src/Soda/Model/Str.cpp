@@ -60,7 +60,7 @@ bool Str::_set( const TmpModelMap &mm, StringBlk data ) {
 }
 
 bool Str::_set( StringBlk data ) {
-    bool res = StringBlk( _data.data(), _data.size() ) != data;
+    bool res = not ( data == _data );
     _data.assign( data.c_str(), data.c_str() + data.size() );
     return res;
 }

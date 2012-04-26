@@ -7,7 +7,7 @@ Session::Session( Database *db, User *user ) : MP( this, db->root_dir ), db( db 
     inactive = false;
     in_sod = false;
 
-    default_watching_sessions = db->session_set_list.no_Id;
+    default_watching_sessions = db->default_watching_sessions;
     default_watching_sessions << this;
 
     default_rights = db->right_set_list.no_Id;

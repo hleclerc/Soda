@@ -7,10 +7,10 @@ mk_chan = '/_?s=' uint[ v ] ' ' { mk_chan( sipe_data->v ); return WAIT; }
 
 cmd_new_session = 'S ' uint[ v ] ' ' { cmd_new_session( sipe_data->v ); }
 cmd_set_session = 's ' uint[ v ] ' ' { cmd_set_session( sipe_data->v ); }
-cmd_creation    = 'N ' word[ w ] ' ' uint[ v ] ' ' { cmd_creation( sipe_data->w, sipe_data->v ); }
+cmd_creation    = 'N ' uint[ v ] ' ' word[ w ] ' ' { cmd_creation( sipe_data->w, sipe_data->v ); }
 cmd_change      = 'C ' uint[ v ] ' ' word[ w ] ' ' { cmd_change( sipe_data->v, sipe_data->w ); }
-cmd_save        = 'R ' word[ w ] ' ' uint[ v ] ' ' { cmd_save( sipe_data->w, sipe_data->v ); }
-cmd_load        = 'L ' word[ w ] ' ' uint[ v ] ' ' { cmd_load( sipe_data->w, sipe_data->v ); }
+cmd_save        = 'R ' uint[ v ] ' ' word[ w ] ' ' { cmd_save( sipe_data->w, sipe_data->v ); }
+cmd_load        = 'L ' uint[ v ] ' ' word[ w ] ' ' { cmd_load( sipe_data->w, sipe_data->v ); }
 cmd_end         = 'E ' { return cmd_end(); }
 
 cmd = '/cmd ' any* eol eol (

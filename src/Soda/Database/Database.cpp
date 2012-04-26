@@ -7,6 +7,8 @@ Database::Database() {
     root_dir = 0;
     root_usr = 0;
     mod_list = 0;
+
+    default_watching_sessions = session_set_list.no_Id;
 }
 
 Database::~Database() {

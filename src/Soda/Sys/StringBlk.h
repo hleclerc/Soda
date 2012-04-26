@@ -50,7 +50,7 @@ public:
             for( int i = 1; i < _size and _data[ i ] >= '0' and _data[ i ] <= '9'; ++i )
                 res = 10 * res - ( _data[ i ] - '0' );
         else
-            for( int i = 1; i < _size and _data[ i ] >= '0' and _data[ i ] <= '9'; ++i )
+            for( int i = 0; i < _size and _data[ i ] >= '0' and _data[ i ] <= '9'; ++i )
                 res = 10 * res + ( _data[ i ] - '0' );
         return res;
     }
