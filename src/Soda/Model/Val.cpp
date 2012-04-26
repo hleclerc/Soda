@@ -20,9 +20,6 @@ void Val::map_ptr( const MapRead &map_read ) {
     rights = map_read[ rights ];
 }
 
-void Val::map_ptr( const TmpModelMap &, Session * ) {
-}
-
 void Val::write_str( Stream &out ) const {
     out << man;
     if ( exp )
@@ -64,6 +61,10 @@ void Val::_write_njs( Stream &out, int var, Session *s ) const {
         out << "var v_" << var << " = new Val( " << man << " * Math.pow( 10.0, " << exp << " ) );\n";
     else
         out << "var v_" << var << " = new Val( " << man << " );\n";
+}
+
+bool Val::_set( const TmpModelMap &mm, StringBlk data ) {
+    return _set( data );
 }
 
 bool Val::_set( StringBlk data ) {
@@ -122,6 +123,7 @@ bool Val::_set( StringBlk data ) {
 
     return oman != man or oexp != exp;
 }
+
 
 bool Val::_set( SI64 val ) {
     bool res = val != man or exp;

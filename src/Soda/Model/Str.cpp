@@ -55,6 +55,10 @@ void Str::_write_njs( Stream &out, int var, Session *s ) const {
     out << "var v_" << var << " = new Str( decodeURIComponent( '" << url_encode( _data ) << "' ) );\n";
 }
 
+bool Str::_set( const TmpModelMap &mm, StringBlk data ) {
+    return _set( data );
+}
+
 bool Str::_set( StringBlk data ) {
     bool res = StringBlk( _data.data(), _data.size() ) != data;
     _data.assign( data.c_str(), data.c_str() + data.size() );
