@@ -39,6 +39,7 @@ Model *Model::attr( StringBlk name ) const { return 0; }
 
 bool Model::equal( StringBlk name ) const { TODO; std::cout << type() << std::endl; return false; }
 
+bool Model::_set( StringBlk data ) { TODO; std::cout << type() << std::endl; return false; }
 bool Model::_set( Model *m ) { TODO; std::cout << type() << std::endl; return false; }
 bool Model::_set( SI64 val ) { TODO; std::cout << type() << std::endl; return false; }
 bool Model::_set( FP64 val ) { TODO; std::cout << type() << std::endl; return false; }

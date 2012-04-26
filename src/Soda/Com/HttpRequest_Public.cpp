@@ -27,6 +27,7 @@ void HttpRequest_Public::hup() {
 
 void HttpRequest_Public::cmd_new_session( int num_inst ) {
     session = loop->database->session_allocator.factory( loop->database, loop->database->root_usr, num_inst );
+    tmp_map.session = session;
 
     // set _session_num
     oun << "FileSystem._insts[ " << num_inst << " ]._session_num = " << session << ";";
@@ -40,6 +41,7 @@ void HttpRequest_Public::cmd_new_session( int num_inst ) {
 
 void HttpRequest_Public::cmd_set_session( ST ptr_session ) {
     session = dynamic_cast<JavascriptSession *>( loop->database->session_allocator.check( reinterpret_cast<Session *>( ptr_session ) ) );
+    tmp_map.session = session;
 }
 
 int HttpRequest_Public::cmd_end() {
@@ -67,7 +69,7 @@ void HttpRequest_Public::cmd_creation( const String &type, ST tmp_id ) {
 
 void HttpRequest_Public::cmd_change( ST ptr_model, const String &data ) {
     if ( session ) {
-        MP mp( session, tmp_map( ptr_model, session ) );
+        MP mp( session, tmp_map[ ptr_model ] );
         mp.set( tmp_map, StringBlk( data.data(), data.size() ) );
     }
 }
@@ -85,7 +87,7 @@ void HttpRequest_Public::cmd_load( const String &path, int num_callback ) {
 
 void HttpRequest_Public::cmd_save( const String &path, ST ptr_model ) {
     if ( session )
-        session->operator[]( StringBlk( path.data(), path.size() ) ) = tmp_map( ptr_model, session );
+        session->operator[]( StringBlk( path.data(), path.size() ) ) = tmp_map[ ptr_model ];
 }
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {

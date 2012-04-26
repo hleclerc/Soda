@@ -8,18 +8,19 @@
 struct TmpModelMap {
     typedef std::map<ST,Model *> TM;
 
-    inline Model *operator()( ST ptr_model, Session *session ) const {
+    TmpModelMap() : session( 0 ) {}
+
+    inline Model *operator[]( ST ptr_model ) const {
         if ( ptr_model & 3 ) {
             TM::const_iterator iter = data.find( ptr_model );
             return iter != data.end() ? iter->second : 0;
         }
-        return session->db->model_allocator.check( reinterpret_cast<Model *>( ptr_model ) );
+        if ( session )
+            return session->db->model_allocator.check( reinterpret_cast<Model *>( ptr_model ) );
+        return 0;
     }
 
-    inline Model *operator()( Model *ptr_model, Session *session ) const {
-        return operator()( (ST)ptr_model, session );
-    }
-
+    Session *session;
     TM data;
 };
 

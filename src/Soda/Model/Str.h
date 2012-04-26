@@ -22,6 +22,7 @@ public:
 
 protected:
     virtual void _write_njs( Stream &out, int var, Session *s ) const;
+    virtual bool _set( const TmpModelMap &mm, StringBlk data );
     virtual bool _set( StringBlk data );
 
     friend class MP;
