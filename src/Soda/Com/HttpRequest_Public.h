@@ -20,7 +20,7 @@ public:
 
     void cmd_new_session( int num_inst ); ///< make a new session. num_inst is the number of the distant FileSystem instance
     void cmd_set_session( ST ptr_session ); ///<
-    void cmd_creation( const String &type, ST tmp_id, const String &data ); ///<
+    void cmd_creation( const String &type, ST tmp_id ); ///<
     void cmd_change( ST ptr_model, const String &data ); ///<
     void cmd_load( const String &path, int num_callback ); ///<
     void cmd_save( const String &path, ST ptr_model ); ///<

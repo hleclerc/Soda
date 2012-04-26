@@ -76,7 +76,7 @@ void Lst::_write_njs( Stream &out, int var, Session *session ) const {
 bool Lst::_set( const TmpModelMap &mm, StringBlk n ) {
     Vec<Model *> tmp;
     while ( StringBlk p = n.split( ',' ) )
-        if ( Model *m = mm( p.atoi() ) )
+        if ( Model *m = mm[ p.atoi() ] )
             tmp << m;
     if ( _data == tmp )
         return false;
