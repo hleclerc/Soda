@@ -2,6 +2,7 @@
 #define _SECUREALLOC_H
 
 #include <stdlib.h>
+#include <set>
 
 /**
   TODO: actual check
@@ -12,7 +13,9 @@ public:
     }
 
     void *allocate( int size ) {
-        return malloc( size );
+        void *res = malloc( size );
+        _allowed.insert( res );
+        return res;
     }
 
     template<int size>
@@ -24,13 +27,16 @@ public:
     void align( N<size> ) {}
 
     void free( void *ptr, int ) {
+        _allowed.erase( ptr );
         ::free( ptr );
     }
 
     template<class T>
     T *check( T *ptr ) const {
-        return ptr;
+        return  _allowed.count( ptr ) ? ptr : 0;
     }
+
+    std::set<void *> _allowed; // TODO: take an optimized container
 };
 
 #endif // _SECUREALLOC_H

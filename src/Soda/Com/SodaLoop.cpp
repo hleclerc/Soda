@@ -39,8 +39,8 @@ int SodaLoop::run() {
     *ev_loop << &s;
 
     // signal
-    int sigs[] = { SIGINT, SIGQUIT, SIGKILL, -1 };
-    *ev_loop << new Signal_WO<SodaLoop>( this, sigs );
+//    int sigs[] = { SIGINT, SIGQUIT, SIGKILL, -1 };
+//    *ev_loop << new Signal_WO<SodaLoop>( this, sigs );
 
     // timer
     *ev_loop << new Timer_WO<SodaLoop>( this, 0.5 );

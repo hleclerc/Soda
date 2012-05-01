@@ -89,7 +89,7 @@ bool ModelWithAttr::_set( const TmpModelMap &mm, StringBlk data ) {
     while ( StringBlk p = data.split( ',' ) ) {
         StringBlk k = p.split( ':' );
         if ( p and k ) {
-            if ( Model *m = db()->model_allocator.check( (Model *)p.atoi() ) ) {
+            if ( Model *m = mm[ p.atoi() ] ) {
                 Item &res = tmp.push_back();
                 res.key = db()->nstring_list( k );
                 res.val = m;
@@ -107,9 +107,11 @@ bool ModelWithAttr::_set( StringBlk data ) {
     while ( StringBlk p = data.split( ',' ) ) {
         StringBlk k = p.split( ':' );
         if ( p and k ) {
-            Item &res = tmp.push_back();
-            res.key = db()->nstring_list( k );
-            res.val = (Model *)p.atoi();
+            if ( Model *m = db()->model_allocator.check( (Model *)p.atoi() ) ) {
+                Item &res = tmp.push_back();
+                res.key = db()->nstring_list( k );
+                res.val = m;
+            }
         }
     }
     if ( _data == tmp )
