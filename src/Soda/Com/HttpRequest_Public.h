@@ -8,13 +8,13 @@
 
 #include "../Database/TmpModelMap.h"
 #include "JavascriptSession.h"
-#include "SodaLoop.h"
+#include "ServerLoop.h"
 
 /**
 */
 class HttpRequest_Public : public EventObj_HttpRequest {
 public:
-    HttpRequest_Public( int fd, SodaLoop *loop );
+    HttpRequest_Public( int fd, ServerLoop *loop );
     virtual int parse( char *beg, char *end ); ///< do nothing. Permits to instantiate a HttpRequest_Public
     virtual void hup(); ///< if closed
 
@@ -34,9 +34,9 @@ public:
     std::ostringstream out;
 
     // context
-    JavascriptSession *session;
     TmpModelMap tmp_map;
-    SodaLoop *loop;
+    ServerLoop *loop;
+    Session *session;
 };
 
 #endif // HTTPREQUEST_PUBLIC_H

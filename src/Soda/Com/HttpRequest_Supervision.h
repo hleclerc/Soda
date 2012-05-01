@@ -3,13 +3,13 @@
 
 #include <Celo/EventObj_HttpRequest.h>
 #include <Celo/EventLoop.h>
-#include "SodaLoop.h"
+#include "ServerLoop.h"
 
 /**
 */
 class HttpRequest_Supervision : public EventObj_HttpRequest {
 public:
-    HttpRequest_Supervision( int fd, SodaLoop *loop );
+    HttpRequest_Supervision( int fd, ServerLoop *loop );
     void index();
 
     #define SIPE_CHARP char *
@@ -18,7 +18,7 @@ public:
     #undef  SIPE_CHARP
     #undef  SIPE_CLASS
 
-    SodaLoop *loop;
+    ServerLoop *loop;
 };
 
 #endif // HTTPREQUEST_SUPERVISION_H

@@ -1,5 +1,6 @@
 Makefile
 update_files.sh
+src/Soda/InstallDir.h
 src/Soda/Model/ModelWithAttr.h
 src/Soda/Model/File.h
 src/Soda/Model/Model_decl.h
@@ -34,12 +35,14 @@ src/Soda/Sys/Nstring.h
 src/Soda/Sys/AllocFactory.h
 src/Soda/Sys/BinInp.h
 src/Soda/Sys/SList.h
+src/Soda/Com/HttpRequest_Supervision_parser.h
 src/Soda/Com/HttpRequest_Public.h
+src/Soda/Com/ClientLoop.h
 src/Soda/Com/HttpRequest_Supervision.h
 src/Soda/Com/UpdateDl.h
 src/Soda/Com/TimeOutList.h
+src/Soda/Com/ServerLoop.h
 src/Soda/Com/JavascriptSession.h
-src/Soda/Com/SodaLoop.h
 src/Soda/Database/Session.h
 src/Soda/Database/Database.h
 src/Soda/Database/RootSession.h
@@ -61,10 +64,11 @@ src/Soda/Model/Directory.cpp
 src/Soda/Sys/ErrorList.cpp
 src/Soda/Sys/Command.cpp
 src/Soda/Sys/NstringList.cpp
+src/Soda/Com/ServerLoop.cpp
+src/Soda/Com/ClientLoop.cpp
 src/Soda/Com/UpdateDl.cpp
 src/Soda/Com/HttpRequest_Supervision.cpp
 src/Soda/Com/HttpRequest_Public.cpp
-src/Soda/Com/SodaLoop.cpp
 src/Soda/Com/JavascriptSession.cpp
 src/Soda/Database/MP.cpp
 src/Soda/Database/RootSession.cpp
@@ -75,3 +79,8 @@ src/Soda/Com/HttpRequest_Public_parser.sipe
 tests/test_IdSet.cpp
 tests/test_Model.cpp
 tests/test_Nstring.cpp
+tests/test_ClientLoop.cpp
+src/Soda/Com/CppSession.h
+src/Soda/Com/CppSession.cpp
+src/Soda/Com/SodaRequest_Public.h
+src/Soda/Com/SodaRequest_Public.cpp

@@ -11,13 +11,14 @@
 #include "../Database/RootSession.h"
 #include "HttpRequest_Supervision.h"
 #include "HttpRequest_Public.h"
-#include "SodaLoop.h"
+#include "SodaRequest_Public.h"
+#include "ServerLoop.h"
 
-SodaLoop::SodaLoop() : update_dl( this ) {
+ServerLoop::ServerLoop() : update_dl( this ) {
     #include <PrepArg/constructor.h>
 }
 
-int SodaLoop::run() {
+int ServerLoop::run() {
     if ( verbose ) {
         #include <PrepArg/info.h>
     }
@@ -27,26 +28,29 @@ int SodaLoop::run() {
     root_session = database->session_allocator.factory( database, db_file );
     database->default_watching_sessions << root_session;
 
-    // fake listener (will be replaced by a generated dlopen'ed one)
-    Listener_Factory<HttpRequest_Public,SodaLoop> f( port, this );
+    // fake http listener (will be replaced by a generated dlopen'ed one)
+    Listener_Factory<HttpRequest_Public,ServerLoop> f( port, this );
+    http_listener = &f;
     *ev_loop << &f;
-    listener = &f;
 
+    // listener binary stream
+    Listener_Factory<SodaRequest_Public,ServerLoop> g( soda_port, this );
+    *ev_loop << &g;
 
     // supervision
-    Listener_Factory<HttpRequest_Supervision,SodaLoop> s( port_super, this );
+    Listener_Factory<HttpRequest_Supervision,ServerLoop> s( super_port, this );
     s.launch = launch_browser_super;
     *ev_loop << &s;
 
     // signal
-//    int sigs[] = { SIGINT, SIGQUIT, SIGKILL, -1 };
-//    *ev_loop << new Signal_WO<SodaLoop>( this, sigs );
+    int sigs[] = { SIGINT, SIGQUIT, SIGKILL, -1 };
+    *ev_loop << new Signal_WO<ServerLoop>( this, sigs );
 
     // timer
-    *ev_loop << new Timer_WO<SodaLoop>( this, 0.5 );
+    *ev_loop << new Timer_WO<ServerLoop>( this, 0.5 );
 
     // idle
-    *ev_loop << new Idle_WO<SodaLoop>( this );
+    *ev_loop << new Idle_WO<ServerLoop>( this );
 
     // launch update
     update();
@@ -54,23 +58,23 @@ int SodaLoop::run() {
     return ev_loop->run();
 }
 
-void SodaLoop::update() {
+void ServerLoop::update() {
     update_dl.exec();
 }
 
-bool SodaLoop::idle() {
+bool ServerLoop::idle() {
     database->end_round();
     return true;
 }
 
-bool SodaLoop::timeout() {
+bool ServerLoop::timeout() {
     // a new HttpRequest ?
     if ( update_dl.has_update ) {
         update_dl.has_update = false;
-        update_dl.sy_req( listener );
+        update_dl.sy_req( http_listener );
         if ( launch_browser ) {
-            listener->start_url = start_page;
-            listener->launch_browser();
+            http_listener->start_url = start_page;
+            http_listener->launch_browser();
         }
     }
 
@@ -90,15 +94,15 @@ bool SodaLoop::timeout() {
     return true;
 }
 
-bool SodaLoop::signal( int sig ) {
+bool ServerLoop::signal( int sig ) {
     std::cerr << "Sig " << sig << std::endl;
     return true;
 }
 
-void SodaLoop::add_timeout( PI64 delay, JavascriptSession *s ) {
+void ServerLoop::add_timeout( PI64 delay, JavascriptSession *s ) {
     s->date_channel = time( 0 ) + delay;
     timeout_reqs[ delay ] << s;
 }
 
-void SodaLoop::rem_timeout( PI64 delay, JavascriptSession *s ) {
+void ServerLoop::rem_timeout( PI64 delay, JavascriptSession *s ) {
 }

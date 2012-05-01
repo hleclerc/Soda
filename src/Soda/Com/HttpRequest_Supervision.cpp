@@ -2,7 +2,7 @@
 #include <Celo/StreamSep.h>
 #include <sstream>
 
-HttpRequest_Supervision::HttpRequest_Supervision( int fd, SodaLoop *loop ) : EventObj_HttpRequest( fd ), loop( loop ) {
+HttpRequest_Supervision::HttpRequest_Supervision( int fd, ServerLoop *loop ) : EventObj_HttpRequest( fd ), loop( loop ) {
 }
 
 void HttpRequest_Supervision::index() {

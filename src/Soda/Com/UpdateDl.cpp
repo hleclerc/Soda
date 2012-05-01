@@ -1,6 +1,6 @@
 #include <Celo/StaticFileData.h>
 #include <Celo/StringHelp.h>
-#include "SodaLoop.h"
+#include "ServerLoop.h"
 #include "UpdateDl.h"
 
 #include <sys/types.h>
@@ -16,7 +16,7 @@
 #endif
 
 // class
-UpdateDl::UpdateDl( SodaLoop *l ) : l( l ) {
+UpdateDl::UpdateDl( ServerLoop *l ) : l( l ) {
     has_update = false;
 }
 
@@ -60,14 +60,14 @@ void UpdateDl::run() {
     cpp_file << "const char *_data = &_binary_compilations_dl_req_data_start;\n";
     cpp_file << "\n";
     cpp_file << "struct _HttpRequest : HttpRequest_Public {\n";
-    cpp_file << "    _HttpRequest( int fd, SodaLoop *loop ) : HttpRequest_Public( fd, loop ) {} \n";
+    cpp_file << "    _HttpRequest( int fd, ServerLoop *loop ) : HttpRequest_Public( fd, loop ) {} \n";
     cpp_file << "    #define SIPE_CHARP char *\n";
     cpp_file << "    #define SIPE_CLASS\n";
     cpp_file << "    #include \"dl_req.h\"\n";
     cpp_file << "};\n";
     cpp_file << "\n";
     cpp_file << "extern \"C\" void _exec( Listener_WithLaunch *res ) {\n";
-    cpp_file << "    new( res ) Listener_Factory<_HttpRequest,SodaLoop>( HttpRequest_Public::VtableOnly() );\n";
+    cpp_file << "    new( res ) Listener_Factory<_HttpRequest,ServerLoop>( HttpRequest_Public::VtableOnly() );\n";
     cpp_file << "}\n";
 
     // generation .sipe -> .h

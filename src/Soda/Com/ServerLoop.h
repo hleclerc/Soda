@@ -1,5 +1,5 @@
-#ifndef SODALOOP_H
-#define SODALOOP_H
+#ifndef SERVERLOOP_H
+#define SERVERLOOP_H
 
 #define PREPARG_FILE <Soda/args.h>
 
@@ -16,9 +16,9 @@ class EventLoop;
 
 /**
 */
-class SodaLoop {
+class ServerLoop {
 public:
-    SodaLoop();
+    ServerLoop();
     int run();
     void update();
 
@@ -31,7 +31,7 @@ public:
 
     typedef std::map<double,FList<JavascriptSession> > TS;
     #include <PrepArg/attributes.h>
-    Listener_WithLaunch *listener;
+    Listener_WithLaunch *http_listener;
     EventLoop           *ev_loop;
     UpdateDl             update_dl;
     RootSession         *root_session;
@@ -39,4 +39,4 @@ public:
     TS                   timeout_reqs; ///< [ delay ] -> list
 };
 
-#endif // SODALOOP_H
+#endif // SERVERLOOP_H

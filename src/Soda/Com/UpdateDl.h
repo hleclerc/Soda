@@ -6,7 +6,7 @@
 #include "../Sys/Command.h"
 
 class Listener_WithLaunch;
-class SodaLoop;
+class ServerLoop;
 
 /**
 */
@@ -14,11 +14,11 @@ class UpdateDl : public Thread {
 public:
     typedef void TF( Listener_WithLaunch *res );
 
-    UpdateDl( SodaLoop *l );
+    UpdateDl( ServerLoop *l );
     virtual void run();
 
     // input
-    SodaLoop   *l;
+    ServerLoop   *l;
 
     // helpers
     Mutex       mutex;      ///< we don't to compile twice the same things

@@ -4,7 +4,7 @@
 #include <Celo/StringHelp.h>
 #include <sstream>
 
-HttpRequest_Public::HttpRequest_Public( int fd, SodaLoop *loop ) : EventObj_HttpRequest( fd ), oun( out ), loop( loop ) {
+HttpRequest_Public::HttpRequest_Public( int fd, ServerLoop *loop ) : EventObj_HttpRequest( fd ), oun( out ), loop( loop ) {
     oun << "HTTP/1.0 200 OK";
     oun << "Content-Type: text/javascript";
     //oun << "Content-Length: 00000000";
@@ -26,7 +26,7 @@ void HttpRequest_Public::hup() {
 }
 
 void HttpRequest_Public::cmd_new_session( int num_inst ) {
-    session = loop->database->session_allocator.factory( loop->database, loop->database->root_usr, num_inst );
+    session = (JavascriptSession *)loop->database->session_allocator.factory( loop->database, loop->database->root_usr, num_inst );
     tmp_map.session = session;
 
     // set _session_num
@@ -91,20 +91,23 @@ void HttpRequest_Public::cmd_save( const String &path, ST ptr_model ) {
 }
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {
-    session = dynamic_cast<JavascriptSession *>( loop->database->session_allocator.check( reinterpret_cast<Session *>( ptr_session ) ) );
-    if ( not session->push_channel ) {
-        session->push_channel = this;
+    if ( JavascriptSession *jss = dynamic_cast<JavascriptSession *>( loop->database->session_allocator.check( reinterpret_cast<Session *>( ptr_session ) ) ) ) {
+        session = jss;
+        if ( not jss->push_channel ) {
+            jss->push_channel = this;
 
-        String s = session->data_to_push.str();
-        if ( s.size() ) {
-            out << s;
-            session->rq_chan_and_close_pc();
-        } else
-            loop->add_timeout( 30, session );
+            String s = jss->data_to_push.str();
+            if ( s.size() ) {
+                out << s;
+                jss->rq_chan_and_close_pc();
+            } else
+                loop->add_timeout( 30, jss );
+        }
     }
 }
 
 void HttpRequest_Public::rq_chan_and_close() {
-    oun << "FileSystem._insts[ " << session->num_inst << " ].make_channel();";
+    if ( JavascriptSession *jss = dynamic_cast<JavascriptSession *>( session ) )
+        oun << "FileSystem._insts[ " << jss->num_inst << " ].make_channel();";
     cmd_end();
 }
