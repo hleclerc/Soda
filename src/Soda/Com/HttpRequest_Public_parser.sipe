@@ -5,6 +5,14 @@ get = 'GET '
 
 mk_chan = '/_?s=' uint[ v ] ' ' { mk_chan( sipe_data->v ); return WAIT; }
 
+put = 'PUT /_?c=' uint[ v ] ' ' (
+        content_length |
+        ( eol eol -> end_header ) |
+        any
+    )** <- end_header { ; }
+
+content_length = 'Content-Length: '
+
 cmd_new_session = 'S ' uint[ v ] ' ' { cmd_new_session( sipe_data->v ); }
 cmd_set_session = 's ' uint[ v ] ' ' { cmd_set_session( sipe_data->v ); }
 cmd_creation    = 'N ' uint[ v ] ' ' word[ w ] ' ' { cmd_creation( sipe_data->w, sipe_data->v ); }
