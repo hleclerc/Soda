@@ -2,6 +2,7 @@
 #define JAVASCRIPTSESSION_H
 
 #include "../Database/Session.h"
+#include "../Sys/FList.h"
 class HttpRequest_Public;
 
 /**
@@ -14,6 +15,8 @@ public:
     void rq_chan_and_close_pc();
 
     // for push update
+    FList<JavascriptSession> *list;
+    JavascriptSession *prev;
     JavascriptSession *next;
     PI64 date_channel;
 

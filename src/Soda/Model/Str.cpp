@@ -60,7 +60,8 @@ bool Str::_set( const TmpModelMap &mm, StringBlk data ) {
 }
 
 bool Str::_set( StringBlk data ) {
-    bool res = not ( data == _data );
-    _data.assign( data.c_str(), data.c_str() + data.size() );
+    std::string tmp = url_decode( std::string( data.c_str(), data.c_str() + data.size() ) );
+    bool res = not ( tmp == _data );
+    _data = tmp;
     return res;
 }

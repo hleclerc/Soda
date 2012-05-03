@@ -92,6 +92,7 @@ void HttpRequest_Public::cmd_save( const String &path, ST ptr_model ) {
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {
     if ( JavascriptSession *jss = dynamic_cast<JavascriptSession *>( loop->database->session_allocator.check( reinterpret_cast<Session *>( ptr_session ) ) ) ) {
+        tmp_map.session = jss;
         session = jss;
         if ( not jss->push_channel ) {
             jss->push_channel = this;
@@ -100,8 +101,9 @@ void HttpRequest_Public::mk_chan( ST ptr_session ) {
             if ( s.size() ) {
                 out << s;
                 jss->rq_chan_and_close_pc();
-            } else
+            } else {
                 loop->add_timeout( 30, jss );
+            }
         }
     }
 }

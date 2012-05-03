@@ -115,8 +115,9 @@ Model *MP::factory( New_File nf ) {
     s->db->add_to_mod_list( res, s );
     // fill the attributes
     MP mp( s, res );
-    mp[ NSTRING_name ] = nf.name;
-    mp[ NSTRING__ptr ] = (SI64)nf.p;
+    mp[ NSTRING_name  ] = nf.name;
+    mp[ NSTRING__ptr  ] = (SI64)nf.p;
+    mp[ NSTRING__info ].create( new_Obj( NSTRING_Model ) );
     return res;
 }
 

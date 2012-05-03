@@ -47,6 +47,13 @@ public:
     }
 
     template<class T>
+    MP create( const T &val ) {
+        if ( b or n )
+            return _create_attr( factory( val ) );
+        return *this;
+    }
+
+    template<class T>
     MP operator<<( const T &val ) {
         // we need to create a new Lst ?
         if ( b or n )

@@ -3,6 +3,7 @@
 
 JavascriptSession::JavascriptSession( Database *db, User *user, int num_inst ) : Session( db, user ), num_inst( num_inst ) {
     push_channel = 0;
+    list = 0;
 }
 
 void JavascriptSession::on_change( Model *m ) {
@@ -11,6 +12,9 @@ void JavascriptSession::on_change( Model *m ) {
 }
 
 void JavascriptSession::rq_chan_and_close_pc() {
+    if ( list )
+        *list >> this;
+
     if ( push_channel ) {
         push_channel->rq_chan_and_close();
         delete push_channel;
