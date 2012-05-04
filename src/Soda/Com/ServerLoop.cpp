@@ -84,7 +84,6 @@ bool ServerLoop::timeout() {
         while( true ) {
             JavascriptSession *s = iter->second.beg;
             if ( s and o >= s->date_channel ) {
-                std::cout << s << " " << s->next << std::endl;
                 s->rq_chan_and_close_pc();
                 iter->second.pop_front();
             } else
