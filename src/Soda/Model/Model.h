@@ -72,8 +72,8 @@ public:
     Vec<Model *>       parents;
     RightSet           rights;
 
-    PI64               op_id; ///< nb rounds * 2
     static PI64        cur_op_id; ///< nb rounds * 2
+    PI64               op_id; ///< nb rounds * 2
 
 protected:
     friend class MP;

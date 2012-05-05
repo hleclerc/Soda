@@ -158,10 +158,10 @@ MP MP::_create_attr( Model *p ) {
     if ( p ) {
         if ( b ) { // we have to create a new model from a StringBlk ?
             if ( m and m->rights.has( s->user, WR ) and m->_add_attr( s, b, p ) )
-                s->db->add_to_mod_list( m, 0 );
+                s->db->add_to_mod_list( m, s );
         } else if ( n ) { // we have to create a new model for a Nstring ?
             if ( m and m->rights.has( s->user, WR ) and m->_add_attr( s, n, p ) )
-                s->db->add_to_mod_list( m, 0 );
+                s->db->add_to_mod_list( m, s );
         }
     }
     return MP( s, p );
