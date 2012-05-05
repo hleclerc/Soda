@@ -1,7 +1,9 @@
 #include "../Model/Directory.h"
 #include "../Model/User.h"
+
 #include "../Sys/BinInp.h"
 #include "../Sys/Stream.h"
+
 #include "RootSession.h"
 #include "Database.h"
 #include "MapRead.h"
@@ -28,10 +30,8 @@ RootSession::RootSession( Database *db, const char *db_filename ) : Session( db,
         db->root_dir = db->model_allocator.factory( default_rights, default_watching_sessions );
         db->add_to_mod_list( db->root_dir, this );
     }
-    m = db->root_dir; // because *this is a child of MP
 
-
-    //
+    // (re-) open dump file. add basic info
     dump.open( db_filename, BinOut::AppTrunc() );
     dump << (int)Model::_DbFileVersion << (int)FILE_VERSION;
     dump << (int)Model::_RootDir << db->root_dir;
@@ -47,7 +47,7 @@ void RootSession::on_change( Model *m ) {
 }
 
 void RootSession::end_round() {
-    // dump new Nstring
+    // dump new Nstrings
     for( const NstringList::Item *n = db->nstring_list.lmod; n; n = n->pmod ) {
         dump << (int)Model::_Nstring;
         dump << n;
@@ -93,8 +93,7 @@ void RootSession::_load( const char *db_filename ) {
         } else {
             RightSet rights = inp.read();
             Model *p = inp.read();
-            Model *m = factory( inp, t, rights, default_watching_sessions );
-            map_read.m_map[ p ] = m;
+            map_read.m_map[ p ] = factory( inp, t, rights );
         }
     }
 

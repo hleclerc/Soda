@@ -5,6 +5,11 @@
 #include "Session.h"
 
 /**
+  Session for tha soda server.
+
+  It permits to:
+    - initialize the database (load or "auto" init)
+    - dump modifications
 */
 class RootSession : public Session {
 public:

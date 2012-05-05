@@ -41,14 +41,12 @@ public:
     virtual ~Model();
 
     // reading
-    virtual operator SI64() const;
-    virtual operator FP64() const;
-    virtual operator std::string() const;
-
     virtual int nb_attr() const;
-    virtual Model *attr( int index ) const;
+    virtual Model *attr( int index ) const; ///< attr number $index
     virtual Model *attr( Nstring name ) const;
     virtual Model *attr( StringBlk name ) const;
+
+    virtual operator SI64() const;
 
     virtual bool equal( StringBlk name ) const;
 
@@ -75,26 +73,8 @@ public:
     static PI64        cur_op_id; ///< nb rounds * 2
     PI64               op_id; ///< nb rounds * 2
 
-protected:
-    friend class MP;
-
-    //template<class T>
-    //bool _set( const T & ) { return false; }
-
-    virtual bool _set( const TmpModelMap &mm, StringBlk data ) = 0;
-    virtual bool _set( StringBlk data );
-    virtual bool _set( Model *m );
-    virtual bool _set( SI64 val );
-    virtual bool _set( FP64 val );
-
-    virtual bool _set( SI32 val ) { return _set( SI64( val ) ); }
-
-    virtual bool _add_attr( Session *s, StringBlk name, Model *m );
-    virtual bool _add_attr( Session *s, Nstring name, Model *m );
-
-    virtual bool _push( Model *m );
-
     virtual void _write_njs( Stream &out, int var, Session *s ) const = 0;
+    virtual bool _set( const TmpModelMap &mm, StringBlk data ) = 0;
 };
 
 #endif // MODEL_H

@@ -84,21 +84,3 @@ bool Lst::_set( const TmpModelMap &mm, StringBlk n ) {
     return true;
 }
 
-bool Lst::_set( StringBlk n ) {
-    Vec<Model *> tmp;
-    while ( StringBlk p = n.split( ',' ) )
-        if ( Model *m = db()->model_allocator.check( (Model *)p.atoi() ) )
-            tmp << m;
-    if ( _data == tmp )
-        return false;
-    _data = tmp;
-    return true;
-}
-
-bool Lst::_push( Model *m ) {
-    if ( not m )
-        return false;
-    _data << m;
-    m->parents << this;
-    return true;
-}

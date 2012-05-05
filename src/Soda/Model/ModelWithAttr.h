@@ -28,10 +28,6 @@ public:
 
 protected:
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
-    virtual bool _set( StringBlk data );
-
-    virtual bool _add_attr( Session *s, StringBlk name, Model *m );
-    virtual bool _add_attr( Session *s, Nstring name, Model *m );
 
     virtual void _write_njs( Stream &out, int var, Session *s ) const;
 

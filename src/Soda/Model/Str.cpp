@@ -47,21 +47,14 @@ Nstring Str::type() const {
     return NSTRING_Str;
 }
 
-Str::operator std::string() const {
-    return _data;
-}
-
 void Str::_write_njs( Stream &out, int var, Session *s ) const {
     out << "var v_" << var << " = new Str( decodeURIComponent( '" << url_encode( _data ) << "' ) );\n";
 }
 
 bool Str::_set( const TmpModelMap &mm, StringBlk data ) {
-    return _set( data );
-}
-
-bool Str::_set( StringBlk data ) {
     std::string tmp = url_decode( std::string( data.c_str(), data.c_str() + data.size() ) );
     bool res = not ( tmp == _data );
     _data = tmp;
     return res;
 }
+

@@ -1,5 +1,4 @@
 #include "../Database/Database.h"
-#include "../Database/MP.h"
 
 #include "../Sys/UsualStrings.h"
 
@@ -28,26 +27,4 @@ Model *Directory::attr( StringBlk name ) const {
                     if ( Model *p = f->attr( NSTRING__ptr ) )
                         return db()->model_allocator.check( (Model *)p->operator SI64() );
     return 0;
-}
-
-bool Directory::_add_attr( Session *s, StringBlk name, Model *m ) {
-    if ( not name )
-        return false;
-
-    // already in data ?
-    for( int i = 0; i < _data.size(); ++i )
-        if ( Model *f = _data[ i ] )
-            if ( Model *n = f->attr( NSTRING_name ) )
-                if ( n->equal( name ) )
-                    return false;
-
-
-    // else, create a new file
-    MP d( s, this );
-    d << new_File( name, m );
-    return true;
-}
-
-bool Directory::_add_attr( Session *s, Nstring name, Model *m ) {
-    return _add_attr( s, StringBlk( name ), m );
 }

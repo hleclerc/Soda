@@ -102,36 +102,6 @@ bool ModelWithAttr::_set( const TmpModelMap &mm, StringBlk data ) {
     return true;
 }
 
-bool ModelWithAttr::_set( StringBlk data ) {
-    Vec<Item> tmp;
-    while ( StringBlk p = data.split( ',' ) ) {
-        StringBlk k = p.split( ':' );
-        if ( p and k ) {
-            if ( Model *m = db()->model_allocator.check( (Model *)p.atoi() ) ) {
-                Item &res = tmp.push_back();
-                res.key = db()->nstring_list( k );
-                res.val = m;
-            }
-        }
-    }
-    if ( _data == tmp )
-        return false;
-    _data = tmp;
-    return true;
-}
-
-bool ModelWithAttr::_add_attr( Session *s, StringBlk name, Model *m ) {
-    return _add_attr( s, s->db->nstring_list( name ), m );
-}
-
-bool ModelWithAttr::_add_attr( Session *s, Nstring name, Model *m ) {
-    Item item;
-    item.key = name;
-    item.val = m;
-    _data << item;
-    return true;
-}
-
 void ModelWithAttr::_write_njs( Stream &out, int var, Session *session ) const {
     out << "var v_" << var << " = new " << type() << ";\n";
     for( int i = 0; i < _data.size(); ++i ) {

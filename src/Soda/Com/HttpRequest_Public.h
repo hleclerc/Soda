@@ -23,7 +23,6 @@ public:
     void cmd_creation( const String &type, ST tmp_id ); ///<
     void cmd_change( ST ptr_model, const String &data ); ///<
     void cmd_load( const String &path, int num_callback ); ///<
-    void cmd_save( const String &path, ST ptr_model ); ///<
     int  cmd_end();
 
     void mk_chan( ST ptr_session ); ///< we want *this to be a push channel

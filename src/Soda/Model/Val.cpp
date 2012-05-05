@@ -16,6 +16,10 @@ Val::Val( BinInp *inp, RightSet rights, SessionSet watching_sessions ) : Model( 
     exp = inp->read();
 }
 
+Val::operator SI64() const {
+    return man;
+}
+
 void Val::map_ptr( const MapRead &map_read ) {
     rights = map_read[ rights ];
 }
@@ -44,18 +48,6 @@ Nstring Val::type() const {
     return NSTRING_Val;
 }
 
-Val::operator SI64() const {
-    if ( exp )
-        return FP64( *this );
-    return man;
-}
-
-Val::operator FP64() const {
-    if ( exp )
-        return man * std::pow( 10.0, exp );
-    return man;
-}
-
 void Val::_write_njs( Stream &out, int var, Session *s ) const {
     if ( exp )
         out << "var v_" << var << " = new Val( " << man << " * Math.pow( 10.0, " << exp << " ) );\n";
@@ -63,11 +55,11 @@ void Val::_write_njs( Stream &out, int var, Session *s ) const {
         out << "var v_" << var << " = new Val( " << man << " );\n";
 }
 
-bool Val::_set( const TmpModelMap &mm, StringBlk data ) {
-    return _set( data );
+int Val::type_dump() const {
+    return _Val;
 }
 
-bool Val::_set( StringBlk data ) {
+bool Val::_set( const TmpModelMap &mm, StringBlk data ) {
     SI64 oman = man;
     SI32 oexp = exp;
 
@@ -124,9 +116,3 @@ bool Val::_set( StringBlk data ) {
     return oman != man or oexp != exp;
 }
 
-
-bool Val::_set( SI64 val ) {
-    bool res = val != man or exp;
-    man = val;
-    return res;
-}
