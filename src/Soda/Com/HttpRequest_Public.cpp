@@ -68,6 +68,7 @@ void HttpRequest_Public::cmd_creation( const String &type, ST tmp_id ) {
 }
 
 void HttpRequest_Public::cmd_change( ST ptr_model, const String &data ) {
+    PRINT( data );
     if ( session and session->user )
         if ( Model *m = tmp_map[ ptr_model ] )
             if ( m->rights.has( session->user, WR ) and m->_set( tmp_map, StringBlk( data.data(), data.size() ) ) )
