@@ -84,3 +84,5 @@ src/Soda/Com/CppSession.h
 src/Soda/Com/CppSession.cpp
 src/Soda/Com/SodaRequest_Public.h
 src/Soda/Com/SodaRequest_Public.cpp
+src/Soda/Model/Ptr.h
+src/Soda/Model/Ptr.cpp

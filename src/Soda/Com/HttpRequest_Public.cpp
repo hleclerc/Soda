@@ -79,12 +79,12 @@ void HttpRequest_Public::cmd_load( const String &path, int num_callback ) {
     if ( session and session->user )  {
         if ( Model *m = session->operator[]( StringBlk( path.data(), path.size() ) ) ) {
             m->write_njs( out, 0, session ); // <- checks rights
-            oun << "FileSystem._callbacks[ " << num_callback << " ]( v_0, false );";
+            oun << "_c.push([" << num_callback << ",v_0,false]);";
             return;
         }
     }
     // else
-    oun << "FileSystem._callbacks[ " << num_callback << " ]( undefined, true );";
+    oun << "_c.push([" << num_callback << ",undefined,true]);";
 }
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {

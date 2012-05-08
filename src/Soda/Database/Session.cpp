@@ -4,6 +4,7 @@
 #include "../Model/User.h"
 #include "../Model/Val.h"
 #include "../Model/Str.h"
+#include "../Model/Ptr.h"
 
 #include "../Sys/UsualStrings.h"
 #include "../Sys/BinInp.h"

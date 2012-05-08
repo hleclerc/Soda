@@ -50,9 +50,9 @@ Nstring Val::type() const {
 
 void Val::_write_njs( Stream &out, int var, Session *s ) const {
     if ( exp )
-        out << "var v_" << var << " = new Val( " << man << " * Math.pow( 10.0, " << exp << " ) );\n";
+        out << "var v_" << var << " = new " << type() << "( " << man << " * Math.pow( 10.0, " << exp << " ) );\n";
     else
-        out << "var v_" << var << " = new Val( " << man << " );\n";
+        out << "var v_" << var << " = new " << type() << "( " << man << " );\n";
 }
 
 int Val::type_dump() const {

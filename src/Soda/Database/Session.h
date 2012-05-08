@@ -12,6 +12,7 @@ class Database;
 class BinInp;
 class Model;
 class User;
+class Val;
 
 /**
 */
