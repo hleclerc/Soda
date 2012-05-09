@@ -1,3 +1,4 @@
+#include "../Database/TmpModelMap.h"
 #include "../Database/MapRead.h"
 #include "../Sys/UsualStrings.h"
 #include "../Sys/BinOut.h"
@@ -36,8 +37,9 @@ Nstring Ptr::type() const {
     return NSTRING_Ptr;
 }
 
-void Ptr::_write_njs( Stream &out, int var, Session *s ) const {
+bool Ptr::_write_njs( Stream &out, int var, Session *s ) const {
     out << "var v_" << var << " = new " << type() << "( " << man << " );\n";
+    return true;
 }
 
 int Ptr::type_dump() const {
@@ -53,6 +55,10 @@ bool Ptr::_set( const TmpModelMap &mm, StringBlk data ) {
             break;
         man = 10 * man + ( data[ i ] - '0' );
     }
+
+    //
+    if ( man & 3 )
+        man = (ST)mm[ man ];
 
     return oman != man;
 }

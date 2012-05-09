@@ -12,17 +12,23 @@ Model::Model( RightSet rights, SessionSet watching_sessions ) : watching_session
 Model::~Model() {
 }
 
-void Model::write_njs( Stream &out, int var, Session *session ) const {
+bool Model::write_njs( Stream &out, int var, Session *session ) const {
     if ( rights.has( session->user, RD ) ) {
         if ( watching_sessions.has( session ) )
             out << "var v_" << var << " = FileSystem._objects[ " << this << " ];\n";
         else {
             watching_sessions << session;
-            _write_njs( out, var, session );
+            if ( not _write_njs( out, var, session ) ) {
+                out << "var v_" << var << " = undefined;\n";
+                return false;
+            }
             out << "v_" << var << "._server_id = " << this << ";\n";
             out << "FileSystem._objects[ " << this << " ] = v_" << var << ";\n";
         }
+        return true;
     }
+    out << "var v_" << var << " = undefined;\n";
+    return false;
 }
 
 int Model::nb_attr() const { return 0; }

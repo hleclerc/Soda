@@ -18,7 +18,7 @@ public:
     virtual int type_dump() const;
     virtual Nstring type() const;
 
-    virtual void _write_njs( Stream &out, int var, Session *s ) const;
+    virtual bool _write_njs( Stream &out, int var, Session *s ) const;
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
 
     SI64 man;

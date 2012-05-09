@@ -29,7 +29,7 @@ public:
 protected:
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
 
-    virtual void _write_njs( Stream &out, int var, Session *s ) const;
+    virtual bool _write_njs( Stream &out, int var, Session *s ) const;
 
     void _map_ptr( const MapRead &map_read );
 

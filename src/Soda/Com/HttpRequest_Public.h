@@ -9,6 +9,7 @@
 #include "../Database/TmpModelMap.h"
 #include "JavascriptSession.h"
 #include "ServerLoop.h"
+class Ptr;
 
 /**
 */
@@ -21,6 +22,7 @@ public:
     void cmd_new_session( int num_inst ); ///< make a new session. num_inst is the number of the distant FileSystem instance
     void cmd_set_session( ST ptr_session ); ///<
     void cmd_creation( const String &type, ST tmp_id ); ///<
+    void cmd_load_ptr( ST ptr_model, int num_callback ); ///<
     void cmd_change( ST ptr_model, const String &data ); ///<
     void cmd_load( const String &path, int num_callback ); ///<
     int  cmd_end();
@@ -33,6 +35,7 @@ public:
     std::ostringstream out;
 
     // context
+    Vec<Ptr *> ptr_to_update;
     TmpModelMap tmp_map;
     ServerLoop *loop;
     Session *session;

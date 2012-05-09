@@ -21,7 +21,7 @@ public:
     virtual int nb_attr() const;
     virtual Model *attr( int index ) const;
 
-    virtual void _write_njs( Stream &out, int var, Session *s ) const;
+    virtual bool _write_njs( Stream &out, int var, Session *s ) const;
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
 
     Vec<Model *> _data;

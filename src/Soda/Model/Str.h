@@ -18,7 +18,7 @@ public:
     virtual bool equal( StringBlk name ) const;
     virtual Nstring type() const;
 
-    virtual void _write_njs( Stream &out, int var, Session *s ) const;
+    virtual bool _write_njs( Stream &out, int var, Session *s ) const;
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
 
     std::string _data;

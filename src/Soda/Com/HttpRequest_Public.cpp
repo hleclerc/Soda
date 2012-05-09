@@ -68,19 +68,33 @@ void HttpRequest_Public::cmd_creation( const String &type, ST tmp_id ) {
 }
 
 void HttpRequest_Public::cmd_change( ST ptr_model, const String &data ) {
-    PRINT( data );
+    // PRINT( data );
     if ( session and session->user )
         if ( Model *m = tmp_map[ ptr_model ] )
             if ( m->rights.has( session->user, WR ) and m->_set( tmp_map, StringBlk( data.data(), data.size() ) ) )
                 session->db->add_to_mod_list( m, session );
 }
 
+void HttpRequest_Public::cmd_load_ptr( ST ptr_model, int num_callback ) {
+    if ( session and session->user )  {
+        if ( Model *m = tmp_map[ ptr_model ] ) {
+            if ( m->write_njs( out, 0, session ) ) { // <- checks rights
+                oun << "_c.push([" << num_callback << ",    v_0,false]);";
+                return;
+            }
+        }
+    }
+    // else
+    oun << "_c.push([" << num_callback << ",undefined,true]);";
+}
+
 void HttpRequest_Public::cmd_load( const String &path, int num_callback ) {
     if ( session and session->user )  {
         if ( Model *m = session->operator[]( StringBlk( path.data(), path.size() ) ) ) {
-            m->write_njs( out, 0, session ); // <- checks rights
-            oun << "_c.push([" << num_callback << ",v_0,false]);";
-            return;
+            if ( m->write_njs( out, 0, session ) ) { // <- checks rights
+                oun << "_c.push([" << num_callback << ",v_0,false]);";
+                return;
+            }
         }
     }
     // else

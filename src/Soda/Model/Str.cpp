@@ -47,8 +47,9 @@ Nstring Str::type() const {
     return NSTRING_Str;
 }
 
-void Str::_write_njs( Stream &out, int var, Session *s ) const {
+bool Str::_write_njs( Stream &out, int var, Session *s ) const {
     out << "var v_" << var << " = new Str( decodeURIComponent( '" << url_encode( _data ) << "' ) );\n";
+    return true;
 }
 
 bool Str::_set( const TmpModelMap &mm, StringBlk data ) {

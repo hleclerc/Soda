@@ -102,10 +102,12 @@ bool ModelWithAttr::_set( const TmpModelMap &mm, StringBlk data ) {
     return true;
 }
 
-void ModelWithAttr::_write_njs( Stream &out, int var, Session *session ) const {
+bool ModelWithAttr::_write_njs( Stream &out, int var, Session *session ) const {
     out << "var v_" << var << " = new " << type() << ";\n";
     for( int i = 0; i < _data.size(); ++i ) {
-        _data[ i ].val->write_njs( out, var + 1, session );
+        if ( not _data[ i ].val->write_njs( out, var + 1, session ) )
+            return false;
         out << "v_" << var << ".mod_attr( '" << _data[ i ].key << "', v_" << var + 1 << " );\n";
     }
+    return true;
 }
