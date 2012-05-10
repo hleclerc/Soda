@@ -2,7 +2,7 @@
 #include "ServerLoop.h"
 
 #include "../Database/Session.h"
-#include "../Sys/BinOutGen.h"
+#include "../Sys/BinOut.h"
 #include "../Sys/Stream.h"
 
 SodaRequest_Public::SodaRequest_Public( int fd, ServerLoop *loop ) : EventObj_WO( fd ), loop( loop ) {
@@ -13,16 +13,9 @@ void SodaRequest_Public::cmd_load( int n_callback, char *path_str, int path_len 
     if ( session and session->user ) {
         if ( Model *m = session->operator[]( StringBlk( path_str, path_len ) ) ) {
             if ( m->rights.has( session->user, RD ) ) {
-                //
-                std::ostringstream os;
-                BinOutGen<std::ostringstream> b( os );
-
+                BinOut b;
                 b << 'L' << n_callback << (SI64)m;
-
-                String res = os.str();
-                char *data = (char *)res.data();
-                int size = res.size();
-                send_str( data, size );
+                send_str( b.data(), b.size() );
             }
         }
     }

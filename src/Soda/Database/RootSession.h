@@ -19,13 +19,16 @@ public:
     virtual void on_change( Model *m );
     virtual void end_round();
 
+    void flush(); ///< flush dump
+
     // dump IO
     static int reading_with_file_version; ///< readers must take this value into account if changes in the binary format since the production of .db file
-    BinOut dump; ///<
 
 protected:
     void _load( const char *db_filename );
-    std::ofstream f_dump;
+
+    int    _dump_fd;
+    BinOut _dump; ///<
 };
 
 #endif // ROOTSESSION_H

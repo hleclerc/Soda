@@ -8,6 +8,8 @@
 #include "Database.h"
 #include "MapRead.h"
 
+#include <fcntl.h>
+
 int RootSession::reading_with_file_version = RootSession::FILE_VERSION;
 
 RootSession::RootSession( Database *db, const char *db_filename ) : Session( db, 0 ) {
@@ -32,39 +34,43 @@ RootSession::RootSession( Database *db, const char *db_filename ) : Session( db,
     }
 
     // (re-) open dump file. add basic info
-    dump.open( db_filename, BinOut::AppTrunc() );
-    dump << (int)Model::_DbFileVersion << (int)FILE_VERSION;
-    dump << (int)Model::_RootDir << db->root_dir;
-    dump << (int)Model::_RootUsr << db->root_usr;
+    _dump_fd = open( db_filename, O_RDWR | O_CREAT | O_TRUNC | O_APPEND, 0777 );
+    _dump << (int)Model::_DbFileVersion << (int)FILE_VERSION;
+    _dump << (int)Model::_RootDir << db->root_dir;
+    _dump << (int)Model::_RootUsr << db->root_usr;
 
 }
 
 void RootSession::on_change( Model *m ) {
-    dump << m->type_dump();
-    dump << m->rights;
-    dump << m;
-    m->write_dmp( dump );
+    _dump << m->type_dump();
+    _dump << m->rights;
+    _dump << m;
+    m->write_dmp( _dump );
 }
 
 void RootSession::end_round() {
     // dump new Nstrings
     for( const NstringList::Item *n = db->nstring_list.lmod; n; n = n->pmod ) {
-        dump << (int)Model::_Nstring;
-        dump << n;
-        n->write_dmp( dump );
+        _dump << (int)Model::_Nstring;
+        _dump << n;
+        n->write_dmp( _dump );
     }
     db->nstring_list.lmod = 0;
 
     // dump new Rights
     for( const RightSet::Item *n = db->right_set_list.lmod; n; n = n->pmod ) {
-        dump << (int)Model::_Rights;
-        dump << n;
-        n->write_dmp( dump );
+        _dump << (int)Model::_Rights;
+        _dump << n;
+        n->write_dmp( _dump );
     }
     db->right_set_list.lmod = 0;
+}
 
-    //
-    dump.flush();
+void RootSession::flush() {
+    if ( _dump.size() ) {
+        write( _dump_fd, _dump.data(), _dump.size() );
+        _dump.clear( 1024 );
+    }
 }
 
 void RootSession::_load( const char *db_filename ) {

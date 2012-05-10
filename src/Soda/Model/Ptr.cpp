@@ -18,7 +18,16 @@ Ptr::operator SI64() const {
 }
 
 void Ptr::map_ptr( const MapRead &map_read ) {
+    if ( op_id == cur_op_id )
+        return;
+    op_id = cur_op_id;
+
     rights = map_read[ rights ];
+
+    Model *p = map_read[ (Model *)man ];
+    if ( p )
+        p->map_ptr( map_read );
+    man = (SI64)p;
 }
 
 void Ptr::write_str( Stream &out ) const {

@@ -91,6 +91,9 @@ bool ServerLoop::timeout() {
         }
     }
 
+    // save data
+    root_session->flush();
+
     return true;
 }
 
