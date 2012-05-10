@@ -24,10 +24,10 @@ void Ptr::map_ptr( const MapRead &map_read ) {
 
     rights = map_read[ rights ];
 
-    Model *p = map_read[ (Model *)man ];
+    Model *p = map_read[ get_model() ];
     if ( p )
         p->map_ptr( map_read );
-    man = (SI64)p;
+    set_model( p );
 }
 
 void Ptr::write_str( Stream &out ) const {

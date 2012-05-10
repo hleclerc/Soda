@@ -21,6 +21,9 @@ public:
     virtual bool _write_njs( Stream &out, int var, Session *s ) const;
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
 
+    Model *get_model() { return (Model *)man; }
+    void set_model( Model *m ) { man = (SI64)m; }
+
     SI64 man;
 };
 

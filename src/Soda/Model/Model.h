@@ -66,12 +66,11 @@ public:
 
     mutable SessionSet watching_sessions; ///<
     Session           *mod_session; ///< session that made the last change (0 means no change)
-    Model             *next_mod; ///<
-    Vec<Model *>       parents;
+    Model             *next_mod; ///< next model in mod_list (mod_session != 0 means that *this is inside a mod_list)
     RightSet           rights;
 
-    static PI64        cur_op_id; ///< nb rounds * 2
-    PI64               op_id; ///< nb rounds * 2
+    static PI64        cur_op_id; ///<
+    PI64               op_id; ///<
 
     virtual bool _write_njs( Stream &out, int var, Session *s ) const = 0; ///< returns true if ok
     virtual bool _set( const TmpModelMap &mm, StringBlk data ) = 0;
