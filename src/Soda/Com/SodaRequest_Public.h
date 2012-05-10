@@ -3,6 +3,7 @@
 
 #include <Celo/EventObj_WO.h>
 class ServerLoop;
+class Session;
 
 /**
 */
@@ -11,8 +12,13 @@ public:
     SodaRequest_Public( int fd, ServerLoop *loop );
 
 protected:
-    virtual int parse( char *beg, char *end );
+    void cmd_load( int n_callback, char *path_str, int path_len );
 
+    #define SIPE_CHARP char *
+    #define SIPE_CLASS
+    #include "SodaRequest_Public_parser.h"
+
+    Session *session;
     ServerLoop *loop;
 };
 

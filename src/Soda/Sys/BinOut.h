@@ -17,6 +17,7 @@ public:
 
     void open( const char *file, AppTrunc ) { _f.open( file, std::ios_base::trunc ); }
     void open( const char *file ) { _f.open( file ); }
+
     void close() { _f.close(); }
     void flush() { _f.flush(); }
 

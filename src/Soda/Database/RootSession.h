@@ -25,6 +25,7 @@ public:
 
 protected:
     void _load( const char *db_filename );
+    std::ofstream f_dump;
 };
 
 #endif // ROOTSESSION_H
