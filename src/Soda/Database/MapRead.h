@@ -2,6 +2,7 @@
 #define MAPREAD_H
 
 #include "../Model/Model.h"
+#include <assert.h>
 
 /**
   Used to read file with "bad" (old) pointer refs
@@ -18,6 +19,8 @@ struct MapRead {
     }
 
     RightSet operator[]( RightSet m ) const {
+        #warning
+        assert( m._ptr );
         std::map<RightSet,RightSet>::const_iterator res = r_map.find( m );
         return res != r_map.end() ? res->second : RightSet();
     }

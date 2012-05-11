@@ -7,6 +7,7 @@ PI64 Model::cur_op_id = 0;
 
 Model::Model( RightSet rights, SessionSet watching_sessions ) : watching_sessions( watching_sessions ), rights( rights ), op_id( 0 ) {
     mod_session = 0;
+    in_mod_list = false;
 }
 
 Model::~Model() {

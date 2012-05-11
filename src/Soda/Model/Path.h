@@ -7,8 +7,8 @@
 */
 class Path : public ModelWithAttr {
 public:
-    Path( RightSet rights, SessionSet watching_sessions);
     Path( BinInp *inp, RightSet rights, SessionSet watching_sessions );
+    Path( RightSet rights, SessionSet watching_sessions );
 
     virtual void write_dmp( BinOut &out ) const;
     virtual int type_dump() const;

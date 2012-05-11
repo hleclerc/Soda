@@ -129,7 +129,7 @@ int HttpRequest_Public::cmd_put_cnt( PT ptr_session, PT ptr_model, PT &length, c
 
     if ( Val *r = dynamic_cast<Val *>( p->attr( NSTRING_remaining ) ) ) {
         r->man -= len;
-        session->db->add_to_mod_list( r, (Session *)1 /*hum*/ );
+        session->db->add_to_mod_list( r, 0 );
     }
 
     if (( length -= len ))
@@ -144,14 +144,18 @@ int HttpRequest_Public::end_put() {
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {
     if ( JavascriptSession *jss = dynamic_cast<JavascriptSession *>( loop->database->session_allocator.check( reinterpret_cast<Session *>( ptr_session ) ) ) ) {
+        PRINT( "mk_chan" );
+
         tmp_map.session = jss;
         session = jss;
         if ( not jss->push_channel ) {
             jss->push_channel = this;
 
             String s = jss->data_to_push.str();
+            PRINT( s );
             if ( s.size() ) {
                 out << s;
+                jss->data_to_push.str( "" );
                 jss->rq_chan_and_close_pc();
             } else {
                 loop->add_timeout( 30, jss );
@@ -161,7 +165,10 @@ void HttpRequest_Public::mk_chan( ST ptr_session ) {
 }
 
 void HttpRequest_Public::rq_chan_and_close() {
-    if ( JavascriptSession *jss = dynamic_cast<JavascriptSession *>( session ) )
+    if ( JavascriptSession *jss = dynamic_cast<JavascriptSession *>( session ) ) {
+        PRINT( "rq_chan" );
+
         oun << "FileSystem._insts[ " << jss->num_inst << " ].make_channel();";
+    }
     cmd_end();
 }
