@@ -1,7 +1,9 @@
+#include "../Sys/UsualStrings.h"
+#include "../Model/User.h"
 #include "Database.h"
-#include "../Model/Val.h"
+#include <sys/stat.h>
 
-Database::Database() {
+Database::Database( const char *db_directory ) : db_directory( db_directory ) {
     session_set_list.extra = this;
     sod_list = 0;
     root_dir = 0;
@@ -9,6 +11,10 @@ Database::Database() {
     mod_list = 0;
 
     default_watching_sessions = session_set_list.no_Id;
+
+    // bulk directory
+    if ( db_directory )
+        mkdir( db_directory, 0777 );
 }
 
 Database::~Database() {
@@ -54,4 +60,24 @@ void Database::end_round() {
     sod_list = 0;
 }
 
+
+String Database::new_file( User *user ) {
+    // base
+    std::ostringstream res;
+    if ( db_directory )
+        res << db_directory << "/";
+    if ( user )
+        if ( Model *n = user->attr( NSTRING_name ) )
+            res << n->operator String() << "/";
+
+    // + random number
+    while ( true ) {
+        std::ostringstream tmp;
+        tmp << res.str() << rand();
+
+        struct stat buf;
+        if ( stat( tmp.str().c_str(), &buf ) )
+            return tmp.str();
+    }
+}
 

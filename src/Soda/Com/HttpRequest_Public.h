@@ -9,6 +9,7 @@
 #include "../Database/TmpModelMap.h"
 #include "JavascriptSession.h"
 #include "ServerLoop.h"
+class Path;
 class Ptr;
 
 /**
@@ -23,9 +24,14 @@ public:
     void cmd_set_session( ST ptr_session ); ///<
     void cmd_creation( const String &type, ST tmp_id ); ///<
     void cmd_load_ptr( ST ptr_model, int num_callback ); ///<
+    int  cmd_put_cnt( PT ptr_session, PT ptr_model, PT &length, const char *beg, const char *end ); //<
     void cmd_change( ST ptr_model, const String &data ); ///<
     void cmd_load( const String &path, int num_callback ); ///<
+    int  cmd_put( PT ptr_session, PT ptr_model, PT &length, const char *beg, const char *end );
     int  cmd_end();
+
+    int  send_all(); ///< send data in out
+    int  end_put();
 
     void mk_chan( ST ptr_session ); ///< we want *this to be a push channel
     void rq_chan_and_close(); /// request for a channnel (to session)
@@ -39,6 +45,9 @@ public:
     TmpModelMap tmp_map;
     ServerLoop *loop;
     Session *session;
+
+    Path *p;
+    int put_fd;
 };
 
 #endif // HTTPREQUEST_PUBLIC_H

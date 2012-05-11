@@ -38,7 +38,6 @@ RootSession::RootSession( Database *db, const char *db_filename ) : Session( db,
     _dump << (int)Model::_DbFileVersion << (int)FILE_VERSION;
     _dump << (int)Model::_RootDir << db->root_dir;
     _dump << (int)Model::_RootUsr << db->root_usr;
-
 }
 
 void RootSession::on_change( Model *m ) {

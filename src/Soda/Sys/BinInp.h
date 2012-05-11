@@ -2,6 +2,8 @@
 #define BININP_H
 
 #include <fstream>
+#include <string>
+#include "Math.h"
 
 /**
 */
@@ -19,6 +21,15 @@ public:
     BinInp( const char *file ) : _f( file ), ok( true ) {}
     operator bool() const { return _f and ok; }
     void close() { _f.close(); }
+
+    BinInp &operator>>( std::string &res ) {
+        int size = read();
+        char *_ata = new char[ ceil( size, 4 ) ];
+        read( _ata, ceil( size, 4 ) );
+        res.assign( _ata, _ata + size );
+        delete [] _ata;
+        return *this;
+    }
 
     template<class T>
     BinInp &operator>>( T &res ) {

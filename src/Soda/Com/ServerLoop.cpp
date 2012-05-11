@@ -24,7 +24,7 @@ int ServerLoop::run() {
     }
 
     std::auto_ptr<EventLoop  > auto_ptr_ev_loop ( ev_loop  = new EventLoop );
-    std::auto_ptr<Database   > auto_ptr_database( database = new Database );
+    std::auto_ptr<Database   > auto_ptr_database( database = new Database( db_dir ) );
     root_session = database->session_allocator.factory( database, db_file );
     database->default_watching_sessions << root_session;
 

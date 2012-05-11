@@ -2,6 +2,7 @@ DESCRIPTION( "SODA, the Synchronized Object DAtabase" );
 
 SARG( 'b', base_dir, "base directory of files to be served (/ in http requests)", 0 );
 SARG(  0 , db_file , "file name of the database", "dump.db" );
+SARG(  0 , db_dir  , "name of the database file directory (for bulk data)", "data.db" );
 BARG( 'v', verbose , "will give more information", false );
 
 BARG( 'L', launch_browser_super, "after the server start, launch a browser on the supervision page", false );

@@ -2,7 +2,6 @@
 #include "../Sys/UsualStrings.h"
 #include "../Sys/BinInp.h"
 #include "../Sys/BinOut.h"
-#include "../Sys/Math.h"
 #include "Str.h"
 
 #include <Celo/StringHelp.h>
@@ -11,11 +10,11 @@ Str::Str( RightSet rights, SessionSet watching_sessions, const std::string &_dat
 }
 
 Str::Str( BinInp *inp, RightSet rights, SessionSet watching_sessions ) : Model( rights, watching_sessions ) {
-    int size = inp->read();
-    char *_ata = new char[ ceil( size, 4 ) ];
-    inp->read( _ata, ceil( size, 4 ) );
-    _data.assign( _ata, _ata + size );
-    delete [] _ata;
+    *inp >> _data;
+}
+
+Str::operator String() const {
+    return _data;
 }
 
 void Str::map_ptr( const MapRead &map_read ) {
@@ -31,12 +30,7 @@ void Str::write_ujs( Stream &out, Session * ) const {
 }
 
 void Str::write_dmp( BinOut &out ) const {
-    out << (int)_data.size();
-    out.write( _data.data(), _data.size() );
-    if ( int e = ceil( _data.size(), 4 ) - _data.size() ) {
-        const char *r = "    ";
-        out.write( r, e );
-    }
+    out << _data;
 }
 
 bool Str::equal( StringBlk data ) const {

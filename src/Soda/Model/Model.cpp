@@ -37,6 +37,7 @@ Model *Model::attr( Nstring name ) const { return 0; }
 Model *Model::attr( StringBlk name ) const { return 0; }
 
 Model::operator SI64() const { return 0; }
+Model::operator String() const { return String(); }
 
 bool Model::equal( StringBlk name ) const { TODO; std::cout << type() << std::endl; return false; }
 

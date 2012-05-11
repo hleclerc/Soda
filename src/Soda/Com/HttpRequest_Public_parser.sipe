@@ -5,13 +5,13 @@ get = 'GET '
 
 mk_chan = '/_?s=' uint[ v ] ' ' { mk_chan( sipe_data->v ); return WAIT; }
 
-put = 'PUT /_?c=' uint[ v ] ' ' (
+put = 'PUT /_?s=' uint[ v ] '&p=' uint[ u ] ' ' (
         content_length |
         ( eol eol -> end_header ) |
         any
-    )** <- end_header { ; }
+    )** <- end_header { sipe_data->_inp_cont = &&put_cnt; return cmd_put( sipe_data->v, sipe_data->u, sipe_data->l, data + 1, end ); put_cnt: return cmd_put_cnt( sipe_data->v, sipe_data->u, sipe_data->l, data, end );  }
 
-content_length = 'Content-Length: '
+content_length = 'Content-Length: ' uint[ l ]
 
 cmd_new_session = 'S ' uint[ v ] ' ' { cmd_new_session( sipe_data->v ); }
 cmd_set_session = 's ' uint[ v ] ' ' { cmd_set_session( sipe_data->v ); }
@@ -34,4 +34,4 @@ cmd = '/cmd ' any* eol eol (
 
 post = 'POST ' cmd
 
-main = get | post | { error_400(); }
+main = get | post | put | { error_400(); }

@@ -47,6 +47,7 @@ public:
     virtual Model *attr( StringBlk name ) const;
 
     virtual operator SI64() const;
+    virtual operator String() const;
 
     virtual bool equal( StringBlk name ) const;
 

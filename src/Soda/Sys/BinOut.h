@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <string>
+#include "Math.h"
 
 /**
 */
@@ -12,6 +14,16 @@ public:
 
     BinOut() : _size( 0 ), _rese( 0 ) {}
     ~BinOut() { if ( _rese ) free( _data ); }
+
+    BinOut &operator<<( const std::string &_data ) {
+        *this << (int)_data.size();
+        write( _data.data(), _data.size() );
+        if ( int e = ceil( _data.size(), 4 ) - _data.size() ) {
+            const char *r = "    ";
+            write( r, e );
+        }
+        return *this;
+    }
 
     template<class T>
     BinOut &operator<<( const T &res ) {

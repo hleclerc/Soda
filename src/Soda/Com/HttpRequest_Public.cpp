@@ -1,8 +1,13 @@
-#include "../Database/Session.h"
 #include "HttpRequest_Public.h"
+
+#include "../Sys/UsualStrings.h"
+#include "../Database/Session.h"
+#include "../Model/Path.h"
+#include "../Model/Val.h"
 
 #include <Celo/StringHelp.h>
 #include <sstream>
+#include <fcntl.h>
 
 HttpRequest_Public::HttpRequest_Public( int fd, ServerLoop *loop ) : EventObj_HttpRequest( fd ), oun( out ), loop( loop ) {
     oun << "HTTP/1.0 200 OK";
@@ -45,13 +50,17 @@ void HttpRequest_Public::cmd_set_session( ST ptr_session ) {
 }
 
 int HttpRequest_Public::cmd_end() {
+    return send_all();
+}
+
+int HttpRequest_Public::send_all() {
     // data preparation
     String res = out.str();
     char *data = (char *)res.data();
     int size = res.size();
     //for( int c = size - end_num - 3; c; c /= 10 )
     //    data[ end_num-- ] = '0' + ( c % 10 );
-    
+
     // send
     // std::cout.write( data, size );
     send_str( data, size );
@@ -99,6 +108,38 @@ void HttpRequest_Public::cmd_load( const String &path, int num_callback ) {
     }
     // else
     oun << "_c.push([" << num_callback << ",undefined,true]);";
+}
+
+int HttpRequest_Public::cmd_put( PT ptr_session, PT ptr_model, PT &length, const char *beg, const char *end ) {
+    if (( session = dynamic_cast<JavascriptSession *>( loop->database->session_allocator.check( reinterpret_cast<Session *>( ptr_session ) ) ) )) {
+        if (( p = dynamic_cast<Path *>( session->db->model_allocator.check( reinterpret_cast<Model *>( ptr_model ) ) ) )) {
+            put_fd = open( p->path.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0777 );
+            if ( put_fd >= 0 )
+                return cmd_put_cnt( ptr_session, ptr_model, length, beg, end );
+        }
+    }
+    put_fd = -1;
+    oun << "console.log('Bad put request');";
+    return send_all();
+}
+
+int HttpRequest_Public::cmd_put_cnt( PT ptr_session, PT ptr_model, PT &length, const char *beg, const char *end ) {
+    PT len = std::min( length, PT( end - beg ) );
+    write( put_fd, beg, len );
+
+    if ( Val *r = dynamic_cast<Val *>( p->attr( NSTRING_remaining ) ) ) {
+        r->man -= len;
+        session->db->add_to_mod_list( r, (Session *)1 /*hum*/ );
+    }
+
+    if (( length -= len ))
+        return CNT;
+    return end_put();
+}
+
+int HttpRequest_Public::end_put() {
+    oun << "console.log('Uploaded');";
+    return send_all();
 }
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {

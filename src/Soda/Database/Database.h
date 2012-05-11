@@ -12,11 +12,12 @@ class Directory;
 */
 class Database {
 public:
-    Database();
+    Database( const char *db_directory );
     ~Database();
 
     Model *add_to_mod_list( Model *m, Session *s );
     Session *add_to_sod_list( Session *s );
+    String new_file( User *user );
     void end_round();
 
     SessionSet default_watching_sessions;
@@ -25,10 +26,12 @@ public:
     SecureAlloc session_allocator;
     SecureAlloc model_allocator;
     NstringList nstring_list;
+    const char *db_directory; ///< where the files are created and stored
     Directory *root_dir; ///< the "/" directory
     Session *sod_list; ///< list of sessions that have something to send
     Model *mod_list; ///< last object that has been modified during the prededing round(s)
     User *root_usr;
+
 };
 
 #endif // DATABASE_H
