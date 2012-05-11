@@ -7,10 +7,8 @@ JavascriptSession::JavascriptSession( Database *db, User *user, int num_inst ) :
 }
 
 void JavascriptSession::on_change( Model *m ) {
-    if ( m->mod_session != this ) {
-        PRINT( push_channel );
+    if ( m->mod_session != this )
         m->write_ujs( push_channel ? push_channel->out : data_to_push, this );
-    }
 }
 
 void JavascriptSession::rq_chan_and_close_pc() {

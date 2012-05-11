@@ -38,7 +38,7 @@ void Session::end_round() {
 
 Model *Session::factory( BinInp &inp, int t, RightSet rights ) {
     switch ( t ) {
-    #define DECL( M ) case Model::_##M: PRINT( #M ); return db->add_to_mod_list( (M *)db->model_allocator.factory( &inp, rights, default_watching_sessions ), this );
+    #define DECL( M ) case Model::_##M: return db->add_to_mod_list( (M *)db->model_allocator.factory( &inp, rights, default_watching_sessions ), this );
     #include "../Model/Model_decl.h"
     DECL( ModelWithAttrAndName )
     #undef DECL

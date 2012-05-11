@@ -144,15 +144,12 @@ int HttpRequest_Public::end_put() {
 
 void HttpRequest_Public::mk_chan( ST ptr_session ) {
     if ( JavascriptSession *jss = dynamic_cast<JavascriptSession *>( loop->database->session_allocator.check( reinterpret_cast<Session *>( ptr_session ) ) ) ) {
-        PRINT( "mk_chan" );
-
         tmp_map.session = jss;
         session = jss;
         if ( not jss->push_channel ) {
             jss->push_channel = this;
 
             String s = jss->data_to_push.str();
-            PRINT( s );
             if ( s.size() ) {
                 out << s;
                 jss->data_to_push.str( "" );
@@ -165,10 +162,7 @@ void HttpRequest_Public::mk_chan( ST ptr_session ) {
 }
 
 void HttpRequest_Public::rq_chan_and_close() {
-    if ( JavascriptSession *jss = dynamic_cast<JavascriptSession *>( session ) ) {
-        PRINT( "rq_chan" );
-
+    if ( JavascriptSession *jss = dynamic_cast<JavascriptSession *>( session ) )
         oun << "FileSystem._insts[ " << jss->num_inst << " ].make_channel();";
-    }
-    cmd_end();
+    send_all();
 }
