@@ -72,6 +72,8 @@ public:
 
     static PI64        cur_op_id; ///<
     PI64               op_id; ///<
+    bool               in_mod_list; ///<
+
 
     virtual bool _write_njs( Stream &out, int var, Session *s ) const = 0; ///< returns true if ok
     virtual bool _set( const TmpModelMap &mm, StringBlk data ) = 0;

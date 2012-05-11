@@ -83,7 +83,8 @@ public:
     bool operator<( const Item *a ) const { return a < _ptr; }
     bool operator<( IdSet a ) const { return a._ptr < _ptr; }
 
-protected:
+#warning
+// protected:
     const Item *_ptr;
 };
 

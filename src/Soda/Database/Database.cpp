@@ -21,7 +21,8 @@ Database::~Database() {
 }
 
 Model *Database::add_to_mod_list( Model *m, Session *s ) {
-    if ( not m->mod_session ) {
+    if ( not m->in_mod_list ) {
+        m->in_mod_list = true;
         m->mod_session = s;
         m->next_mod = mod_list;
         mod_list = m;
@@ -47,6 +48,7 @@ void Database::end_round() {
             s->on_change( m );
         }
 
+        m->in_mod_list = false;
         m->mod_session = 0;
     }
     mod_list = 0;
