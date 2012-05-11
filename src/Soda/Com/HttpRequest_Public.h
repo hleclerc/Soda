@@ -48,6 +48,7 @@ public:
 
     Path *p;
     int put_fd;
+    int end_num;
 };
 
 #endif // HTTPREQUEST_PUBLIC_H

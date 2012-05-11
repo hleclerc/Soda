@@ -12,9 +12,9 @@
 HttpRequest_Public::HttpRequest_Public( int fd, ServerLoop *loop ) : EventObj_HttpRequest( fd ), oun( out ), loop( loop ) {
     oun << "HTTP/1.0 200 OK";
     oun << "Content-Type: text/javascript";
-    //oun << "Content-Length: 00000000";
+    oun << "Content-Length: 00000000";
     oun << "";
-    //end_num = out.str().size() - 3;
+    end_num = out.str().size() - 3;
 
     session = 0;
 }
@@ -58,8 +58,8 @@ int HttpRequest_Public::send_all() {
     String res = out.str();
     char *data = (char *)res.data();
     int size = res.size();
-    //for( int c = size - end_num - 3; c; c /= 10 )
-    //    data[ end_num-- ] = '0' + ( c % 10 );
+    for( int c = size - end_num - 3; c; c /= 10 )
+        data[ end_num-- ] = '0' + ( c % 10 );
 
     // send
     // std::cout.write( data, size );
