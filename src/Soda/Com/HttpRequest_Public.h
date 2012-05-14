@@ -17,6 +17,8 @@ class Ptr;
 class HttpRequest_Public : public EventObj_HttpRequest {
 public:
     HttpRequest_Public( int fd, ServerLoop *loop );
+    virtual ~HttpRequest_Public();
+
     virtual int parse( char *beg, char *end ); ///< do nothing. Permits to instantiate a HttpRequest_Public
     virtual void hup(); ///< if closed
 

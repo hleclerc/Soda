@@ -17,10 +17,6 @@ Str::operator String() const {
     return _data;
 }
 
-void Str::map_ptr( const MapRead &map_read ) {
-    rights = map_read[ rights ];
-}
-
 void Str::write_str( Stream &out ) const {
     out << _data;
 }
@@ -51,5 +47,9 @@ bool Str::_set( const TmpModelMap &mm, StringBlk data ) {
     bool res = not ( tmp == _data );
     _data = tmp;
     return res;
+}
+
+void Str::_map_ptr( const MapRead &map_read ) {
+    rights = map_read[ rights ];
 }
 

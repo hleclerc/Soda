@@ -39,15 +39,6 @@ Model *ModelWithAttr::attr( StringBlk name ) const {
     return 0;
 }
 
-void ModelWithAttr::map_ptr( const MapRead &map_read ) {
-    if ( op_id == cur_op_id )
-        return;
-    op_id = cur_op_id;
-
-    _map_ptr( map_read );
-}
-
-
 void ModelWithAttr::write_ujs( Stream &out, Session *session ) const {
     // need some object creation ?
     for( int i = 0; i < _data.size(); ++i )
@@ -58,16 +49,6 @@ void ModelWithAttr::write_ujs( Stream &out, Session *session ) const {
     for( int i = 0; i < _data.size(); ++i )
         out << "  " << _data[ i ].key << ": FileSystem._objects[ " << _data[ i ].val << " ],\n";
     out << "} );\n";
-}
-
-void ModelWithAttr::_map_ptr( const MapRead &map_read ) {
-    rights = map_read[ rights ];
-    for( int i = 0; i < _data.size(); ++i ) {
-        _data[ i ].key = map_read[ _data[ i ].key ];
-        _data[ i ].val = map_read[ _data[ i ].val ];
-        if ( _data[ i ].val )
-            _data[ i ].val->map_ptr( map_read );
-    }
 }
 
 void ModelWithAttr::write_str( Stream &out ) const {
@@ -110,4 +91,14 @@ bool ModelWithAttr::_write_njs( Stream &out, int var, Session *session ) const {
         out << "v_" << var << ".mod_attr( '" << _data[ i ].key << "', v_" << var + 1 << " );\n";
     }
     return true;
+}
+
+void ModelWithAttr::_map_ptr( const MapRead &map_read ) {
+    rights = map_read[ rights ];
+    for( int i = 0; i < _data.size(); ++i ) {
+        _data[ i ].key = map_read[ _data[ i ].key ];
+        _data[ i ].val = map_read[ _data[ i ].val ];
+        if ( _data[ i ].val )
+            _data[ i ].val->map_ptr( map_read );
+    }
 }

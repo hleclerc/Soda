@@ -19,11 +19,7 @@ Nstring ModelWithAttrAndName::type() const {
     return _type;
 }
 
-void ModelWithAttrAndName::map_ptr( const MapRead &map_read ) {
-    if ( op_id == cur_op_id )
-        return;
-    op_id = cur_op_id;
-
+void ModelWithAttrAndName::_map_ptr( const MapRead &map_read ) {
     ModelWithAttr::_map_ptr( map_read );
     _type = map_read[ _type ];
 }

@@ -16,17 +16,6 @@ Lst::Lst( BinInp *inp, RightSet rights, SessionSet watching_sessions ) : Model( 
 Lst::Lst( RightSet rights, SessionSet watching_sessions ) : Model( rights, watching_sessions  ) {
 }
 
-void Lst::map_ptr( const MapRead &map_read ) {
-    if ( op_id == cur_op_id )
-        return;
-    op_id = cur_op_id;
-
-    rights = map_read[ rights ];
-    for( int i = 0; i < _data.size(); ++i )
-        if ( ( _data[ i ] = map_read[ _data[ i ] ] ) )
-            _data[ i ]->map_ptr( map_read );
-}
-
 void Lst::write_str( Stream &out ) const {
     for( int i = 0; i < _data.size(); ++i ) {
         _data[ i ]->write_str( out );
@@ -86,3 +75,10 @@ bool Lst::_set( const TmpModelMap &mm, StringBlk n ) {
     return true;
 }
 
+
+void Lst::_map_ptr( const MapRead &map_read ) {
+    rights = map_read[ rights ];
+    for( int i = 0; i < _data.size(); ++i )
+        if ( ( _data[ i ] = map_read[ _data[ i ] ] ) )
+            _data[ i ]->map_ptr( map_read );
+}

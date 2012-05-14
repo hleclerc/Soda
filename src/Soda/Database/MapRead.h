@@ -19,8 +19,6 @@ struct MapRead {
     }
 
     RightSet operator[]( RightSet m ) const {
-        #warning
-        assert( m._ptr );
         std::map<RightSet,RightSet>::const_iterator res = r_map.find( m );
         return res != r_map.end() ? res->second : RightSet();
     }

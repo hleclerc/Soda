@@ -7,12 +7,13 @@
 */
 class ModelWithAttrAndName : public ModelWithAttr {
 public:
-    ModelWithAttrAndName( BinInp *inp, RightSet rights, SessionSet watching_sessions );
     ModelWithAttrAndName( RightSet rights, SessionSet watching_sessions, Nstring _type );
+    ModelWithAttrAndName( BinInp *inp, RightSet rights, SessionSet watching_sessions );
     virtual int type_dump() const { return _ModelWithAttrAndName; }
-    virtual void map_ptr( const MapRead &map_read );
     virtual void write_dmp( BinOut &out ) const;
     Nstring type() const;
+
+    virtual void _map_ptr( const MapRead &map_read );
 
     Nstring _type;
 };

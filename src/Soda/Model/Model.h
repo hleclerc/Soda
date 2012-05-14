@@ -51,7 +51,6 @@ public:
 
     virtual bool equal( StringBlk name ) const;
 
-    virtual void map_ptr( const MapRead &map_read ) = 0; ///< fake ptrs (from file) to real ptrs
     virtual int type_dump() const = 0;
     virtual Nstring type() const = 0;
 
@@ -61,6 +60,7 @@ public:
     bool write_njs( Stream &out, int var, Session *s ) const; ///< code for new v_$var javascript variable representing this
 
     void rm_inactive_sessions(); ///< rm from watching_sessions if s->inactive
+    void map_ptr( const MapRead &map_read ); ///< fake ptrs (from file) to real ptrs
 
     const Database *db() const;
     Database *db();
@@ -76,7 +76,8 @@ public:
 
 
     virtual bool _write_njs( Stream &out, int var, Session *s ) const = 0; ///< returns true if ok
-    virtual bool _set( const TmpModelMap &mm, StringBlk data ) = 0;
+    virtual bool _set( const TmpModelMap &mm, StringBlk data ) = 0; ///< return true if real change
+    virtual void _map_ptr( const MapRead &map_read ) = 0; ///< fake ptrs (from file) to real ptrs
 };
 
 #endif // MODEL_H

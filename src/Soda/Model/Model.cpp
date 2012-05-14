@@ -45,6 +45,13 @@ bool Model::equal( StringBlk name ) const { TODO; std::cout << type() << std::en
 const Database *Model::db() const { return *watching_sessions; }
 Database *Model::db() { return *watching_sessions; }
 
+void Model::map_ptr( const MapRead &map_read ) {
+    if ( op_id != cur_op_id ) {
+        op_id = cur_op_id;
+        _map_ptr( map_read );
+    }
+}
+
 void Model::rm_inactive_sessions() {
     for( int i = 0; i < watching_sessions.size(); ++i ) {
         Session *w = watching_sessions[ i ];

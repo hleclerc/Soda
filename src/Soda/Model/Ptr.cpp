@@ -17,19 +17,6 @@ Ptr::operator SI64() const {
     return man;
 }
 
-void Ptr::map_ptr( const MapRead &map_read ) {
-    if ( op_id == cur_op_id )
-        return;
-    op_id = cur_op_id;
-
-    rights = map_read[ rights ];
-
-    Model *p = map_read[ get_model() ];
-    if ( p )
-        p->map_ptr( map_read );
-    set_model( p );
-}
-
 void Ptr::write_str( Stream &out ) const {
     out << man;
 }
@@ -70,5 +57,15 @@ bool Ptr::_set( const TmpModelMap &mm, StringBlk data ) {
         man = (ST)mm[ man ];
 
     return oman != man;
+}
+
+void Ptr::_map_ptr( const MapRead &map_read ) {
+    rights = map_read[ rights ];
+
+    Model *p = map_read[ get_model() ];
+    set_model( p );
+
+    if ( p )
+        p->map_ptr( map_read );
 }
 

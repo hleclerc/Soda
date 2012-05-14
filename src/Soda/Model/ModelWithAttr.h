@@ -21,17 +21,14 @@ public:
     virtual Model *attr( Nstring name ) const;
     virtual Model *attr( StringBlk name ) const;
 
-    virtual void map_ptr( const MapRead &map_read );
     virtual void write_str( Stream &out ) const;
     virtual void write_dmp( BinOut &out ) const;
     virtual void write_ujs( Stream &out, Session *s ) const;
 
 protected:
-    virtual bool _set( const TmpModelMap &mm, StringBlk data );
-
     virtual bool _write_njs( Stream &out, int var, Session *s ) const;
-
-    void _map_ptr( const MapRead &map_read );
+    virtual bool _set( const TmpModelMap &mm, StringBlk data );
+    virtual void _map_ptr( const MapRead &map_read );
 
     friend class MP;
     Vec<Item> _data;

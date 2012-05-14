@@ -20,10 +20,6 @@ Val::operator SI64() const {
     return man;
 }
 
-void Val::map_ptr( const MapRead &map_read ) {
-    rights = map_read[ rights ];
-}
-
 void Val::write_str( Stream &out ) const {
     out << man;
     if ( exp )
@@ -115,5 +111,9 @@ bool Val::_set( const TmpModelMap &mm, StringBlk data ) {
     }
 
     return oman != man or oexp != exp;
+}
+
+void Val::_map_ptr( const MapRead &map_read ) {
+    rights = map_read[ rights ];
 }
 

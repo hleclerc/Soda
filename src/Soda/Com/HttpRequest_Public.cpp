@@ -17,6 +17,12 @@ HttpRequest_Public::HttpRequest_Public( int fd, ServerLoop *loop ) : EventObj_Ht
     end_num = out.str().size() - 3;
 
     session = 0;
+    put_fd = -1;
+}
+
+HttpRequest_Public::~HttpRequest_Public() {
+    if ( put_fd >= 0 )
+        close( put_fd );
 }
 
 int HttpRequest_Public::parse( char *beg, char *end ) {
