@@ -5,7 +5,7 @@ cmd_load_ptr    = 'l ' uint[ v ] ' ' uint[ u ] ' ' { cmd_load_ptr( sipe_data->v,
 cmd_change      = 'C ' uint[ v ] ' ' word[ w ] ' ' { cmd_change( sipe_data->v, sipe_data->w ); }
 
 cmd_load        = 'L' uint32_bin_le[ v ] uint32_bin_le[ l ] str_sized[ s, 'sipe_data->l' ] { cmd_load( sipe_data->v, sipe_data->s, sipe_data->l ); }
-cmd_end         = 'E ' { return cmd_end(); }
+cmd_end         = 'E ' { cmd_end(); }
 
 main = (
     cmd_load |

@@ -2,6 +2,7 @@
 #define SODAREQUEST_PUBLIC_H
 
 #include <Celo/EventObj_WO.h>
+#include "../Sys/BinOut.h"
 class ServerLoop;
 class Session;
 
@@ -21,6 +22,7 @@ protected:
 
     Session *session;
     ServerLoop *loop;
+    BinOut b;
 };
 
 #endif // SODAREQUEST_PUBLIC_H

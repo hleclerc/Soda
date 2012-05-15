@@ -16,7 +16,7 @@ public:
     ~BinOut() { if ( _rese ) free( _data ); }
 
     BinOut &operator<<( const std::string &_data ) {
-        *this << (int)_data.size();
+        *this << int( _data.size() );
         write( _data.data(), _data.size() );
         if ( int e = ceil( _data.size(), 4 ) - _data.size() ) {
             const char *r = "    ";
