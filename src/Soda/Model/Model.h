@@ -58,6 +58,7 @@ public:
     virtual void write_dmp( BinOut &out ) const = 0;
     virtual void write_ujs( Stream &out, Session *s ) const = 0; ///< update object in javascript
     bool write_njs( Stream &out, int var, Session *s ) const; ///< code for new v_$var javascript variable representing this
+    bool write_nsr( BinOut &out, Session *s ) const; ///< code for new var
 
     void rm_inactive_sessions(); ///< rm from watching_sessions if s->inactive
     void map_ptr( const MapRead &map_read ); ///< fake ptrs (from file) to real ptrs

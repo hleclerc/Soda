@@ -32,6 +32,13 @@ bool Model::write_njs( Stream &out, int var, Session *session ) const {
     return false;
 }
 
+bool Model::write_nsr( BinOut &out, Session *session ) const {
+    if ( rights.has( session->user, RD ) ) {
+        return true;
+    }
+    return false;
+}
+
 int Model::nb_attr() const { return 0; }
 Model *Model::attr( int index ) const { return 0; }
 Model *Model::attr( Nstring name ) const { return 0; }
