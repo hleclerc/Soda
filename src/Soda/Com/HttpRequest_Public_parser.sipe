@@ -9,9 +9,9 @@ put = 'PUT /_?s=' uint[ v ] '&p=' uint[ u ] ' ' (
         content_length |
         ( eol eol -> end_header ) |
         any
-    )** <- end_header { sipe_data->_inp_cont = &&put_cnt; return cmd_put( sipe_data->v, sipe_data->u, sipe_data->l, data + 1, end ); put_cnt: return cmd_put_cnt( sipe_data->v, sipe_data->u, sipe_data->l, data, end );  }
+    )** <- end_header { sipe_data->_inp_cont = &&put_cnt; return cmd_put( sipe_data->v, sipe_data->u, sipe_data->length, data + 1, end ); put_cnt: return cmd_put_cnt( sipe_data->v, sipe_data->u, sipe_data->length, data, end );  }
 
-content_length = 'Content-Length: ' uint[ l ]
+content_length = 'Content-Length: ' uint[ length, PT ]
 
 cmd_new_session = 'S ' uint[ v ] ' ' { cmd_new_session( sipe_data->v ); }
 cmd_set_session = 's ' uint[ v ] ' ' { cmd_set_session( sipe_data->v ); }
