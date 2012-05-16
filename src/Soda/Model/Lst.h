@@ -12,7 +12,7 @@ public:
 
     virtual void write_str( Stream &out ) const;
     virtual void write_dmp( BinOut &out ) const;
-    virtual void write_ujs( Stream &out, Session *s ) const;
+    virtual bool write_ujs( Stream &nut, Stream &uut, Session *s ) const;
 
     virtual int type_dump() const { return _Lst; }
     virtual Nstring type() const;
@@ -20,7 +20,6 @@ public:
     virtual int nb_attr() const;
     virtual Model *attr( int index ) const;
 
-    virtual bool _write_njs( Stream &out, int var, Session *s ) const;
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
     virtual void _map_ptr( const MapRead &map_read );
 

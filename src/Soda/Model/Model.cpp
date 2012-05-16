@@ -1,5 +1,6 @@
 #include "../Database/TmpModelMap.h"
 #include "../Database/Session.h"
+#include "../Sys/BinOut.h"
 #include "Model.h"
 #include <sstream>
 
@@ -13,30 +14,28 @@ Model::Model( RightSet rights, SessionSet watching_sessions ) : watching_session
 Model::~Model() {
 }
 
-bool Model::write_njs( Stream &out, int var, Session *session ) const {
-    if ( rights.has( session->user, RD ) ) {
-        if ( watching_sessions.has( session ) )
-            out << "var v_" << var << " = FileSystem._objects[ " << this << " ];\n";
-        else {
-            watching_sessions << session;
-            if ( not _write_njs( out, var, session ) ) {
-                out << "var v_" << var << " = undefined;\n";
-                return false;
-            }
-            out << "v_" << var << "._server_id = " << this << ";\n";
-            out << "FileSystem._objects[ " << this << " ] = v_" << var << ";\n";
-        }
-        return true;
+bool Model::write_njs( Stream &nut, Stream &uut, Session *session ) const {
+    if ( not rights.has( session->user, RD ) )
+        return false;
+    if ( not watching_sessions.has( session ) ) {
+        watching_sessions << session;
+        if ( not write_ujs( nut, uut, session ) )
+            return false;
+        nut << "_w( " << this << ",new " << type() << ");\n";
     }
-    out << "var v_" << var << " = undefined;\n";
-    return false;
+    return true;
 }
 
-bool Model::write_nsr( BinOut &out, Session *session ) const {
-    if ( rights.has( session->user, RD ) ) {
-        return true;
+bool Model::write_nsr( BinOut &nut, BinOut &uut, Session *session ) const {
+    if ( not rights.has( session->user, RD ) )
+        return false;
+    if ( not watching_sessions.has( session ) ) {
+        watching_sessions << session;
+        if ( not write_usr( nut, uut, session ) )
+            return false;
+        nut << 'N' << PI64( this ) << (std::string)type();
     }
-    return false;
+    return true;
 }
 
 int Model::nb_attr() const { return 0; }

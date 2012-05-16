@@ -7,8 +7,12 @@ JavascriptSession::JavascriptSession( Database *db, User *user, int num_inst ) :
 }
 
 void JavascriptSession::on_change( Model *m ) {
-    if ( m->mod_session != this )
-        m->write_ujs( push_channel ? push_channel->out : data_to_push, this );
+    if ( m->mod_session != this ) {
+        Stream &nut = push_channel ? push_channel->out : data_to_push;
+        std::ostringstream uut;
+        if ( m->write_ujs( nut, uut, this ) )
+            nut << uut.str();
+    }
 }
 
 void JavascriptSession::rq_chan_and_close_pc() {

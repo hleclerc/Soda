@@ -21,8 +21,9 @@ void Str::write_str( Stream &out ) const {
     out << _data;
 }
 
-void Str::write_ujs( Stream &out, Session * ) const {
-    out << "FileSystem._objects[ " << this << " ].set( decodeURIComponent( '" << url_encode( _data ) << "' ), false );\n";
+bool Str::write_ujs( Stream &nut, Stream &uut, Session *s ) const {
+    uut << "FileSystem._objects[ " << this << " ].set( decodeURIComponent( '" << url_encode( _data ) << "' ), false );\n";
+    return true;
 }
 
 void Str::write_dmp( BinOut &out ) const {
@@ -35,11 +36,6 @@ bool Str::equal( StringBlk data ) const {
 
 Nstring Str::type() const {
     return NSTRING_Str;
-}
-
-bool Str::_write_njs( Stream &out, int var, Session *s ) const {
-    out << "var v_" << var << " = new Str( decodeURIComponent( '" << url_encode( _data ) << "' ) );\n";
-    return true;
 }
 
 bool Str::_set( const TmpModelMap &mm, StringBlk data ) {

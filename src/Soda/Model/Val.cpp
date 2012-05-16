@@ -30,26 +30,19 @@ void Val::write_dmp( BinOut &out ) const {
     out << man << exp;
 }
 
-void Val::write_ujs( Stream &out, Session * ) const {
+bool Val::write_ujs( Stream &nut, Stream &uut, Session *s ) const {
     if ( exp ) {
         if ( exp == std::numeric_limits<SI32>::max() ) // NaN
-            out << "FileSystem._objects[ " << this << " ].set( NaN );\n";
+            uut << "FileSystem._objects[ " << this << " ].set( NaN );\n";
         else
-            out << "FileSystem._objects[ " << this << " ].set( " << man << " * Math.pow( 10, " << exp << " ) );\n";
+            uut << "FileSystem._objects[ " << this << " ].set( " << man << " * Math.pow( 10, " << exp << " ) );\n";
     } else
-        out << "FileSystem._objects[ " << this << " ].set( " << man << " );\n";
+        uut << "FileSystem._objects[ " << this << " ].set( " << man << " );\n";
+    return true;
 }
 
 Nstring Val::type() const {
     return NSTRING_Val;
-}
-
-bool Val::_write_njs( Stream &out, int var, Session *s ) const {
-    if ( exp )
-        out << "var v_" << var << " = new " << type() << "( " << man << " * Math.pow( 10.0, " << exp << " ) );\n";
-    else
-        out << "var v_" << var << " = new " << type() << "( " << man << " );\n";
-    return true;
 }
 
 int Val::type_dump() const {

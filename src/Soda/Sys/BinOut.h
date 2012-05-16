@@ -15,14 +15,13 @@ public:
     BinOut() : _size( 0 ), _rese( 0 ) {}
     ~BinOut() { if ( _rese ) free( _data ); }
 
-    BinOut &operator<<( const std::string &_data ) {
-        *this << int( _data.size() );
-        write( _data.data(), _data.size() );
-        if ( int e = ceil( _data.size(), 4 ) - _data.size() ) {
-            const char *r = "    ";
-            write( r, e );
-        }
-        return *this;
+    BinOut &operator<<( const std::string &str ) {
+        *this << int( str.size() );
+        return write( str.data(), str.size() );
+    }
+
+    BinOut &operator<<( const BinOut &bou ) {
+        return write( bou.data(), bou.size() );
     }
 
     template<class T>
@@ -31,7 +30,7 @@ public:
         return *this;
     }
 
-    void write( const char *ptr, int len ) {
+    BinOut &write( const char *ptr, int len ) {
         if ( _rese < _size + len ) {
             if ( _rese ) {
                 if ( ( _rese *= 2 ) < _size + len )
@@ -44,6 +43,7 @@ public:
         }
         memcpy( _data + _size, ptr, len );
         _size += len;
+        return *this;
     }
 
     void clear( int lim_rese = 1024 ) {

@@ -39,16 +39,15 @@ Model *ModelWithAttr::attr( StringBlk name ) const {
     return 0;
 }
 
-void ModelWithAttr::write_ujs( Stream &out, Session *session ) const {
-    // need some object creation ?
+bool ModelWithAttr::write_ujs( Stream &nut, Stream &uut, Session *session ) const {
     for( int i = 0; i < _data.size(); ++i )
-        if ( not _data[ i ].val->watching_sessions.has( session ) )
-            _data[ i ].val->write_njs( out, 0, session );
-    // Lst instructions
-    out << "FileSystem._objects[ " << this << " ].set_attr( {\n";
+        if ( not _data[ i ].val->write_njs( nut, uut, session ) )
+            return false;
+    uut << "FileSystem._objects[ " << this << " ].set_attr( {\n";
     for( int i = 0; i < _data.size(); ++i )
-        out << "  " << _data[ i ].key << ": FileSystem._objects[ " << _data[ i ].val << " ],\n";
-    out << "} );\n";
+        uut << "  " << _data[ i ].key << ": FileSystem._objects[ " << _data[ i ].val << " ],\n";
+    uut << "} );\n";
+    return true;
 }
 
 void ModelWithAttr::write_str( Stream &out ) const {
@@ -80,16 +79,6 @@ bool ModelWithAttr::_set( const TmpModelMap &mm, StringBlk data ) {
     if ( _data == tmp )
         return false;
     _data = tmp;
-    return true;
-}
-
-bool ModelWithAttr::_write_njs( Stream &out, int var, Session *session ) const {
-    out << "var v_" << var << " = new " << type() << ";\n";
-    for( int i = 0; i < _data.size(); ++i ) {
-        if ( not _data[ i ].val->write_njs( out, var + 1, session ) )
-            return false;
-        out << "v_" << var << ".mod_attr( '" << _data[ i ].key << "', v_" << var + 1 << " );\n";
-    }
     return true;
 }
 

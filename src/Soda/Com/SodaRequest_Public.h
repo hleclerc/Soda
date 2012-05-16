@@ -3,6 +3,7 @@
 
 #include <Celo/EventObj_WO.h>
 #include "../Sys/BinOut.h"
+#include <iostream>
 class ServerLoop;
 class Session;
 

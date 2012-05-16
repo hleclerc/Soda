@@ -25,17 +25,13 @@ void Ptr::write_dmp( BinOut &out ) const {
     out << man;
 }
 
-void Ptr::write_ujs( Stream &out, Session * ) const {
-    out << "FileSystem._objects[ " << this << " ].set( " << man << " );\n";
+bool Ptr::write_ujs( Stream &nut, Stream &uut, Session * ) const {
+    uut << "FileSystem._objects[ " << this << " ].set( " << man << " );\n";
+    return true;
 }
 
 Nstring Ptr::type() const {
     return NSTRING_Ptr;
-}
-
-bool Ptr::_write_njs( Stream &out, int var, Session *s ) const {
-    out << "var v_" << var << " = new " << type() << "( " << man << " );\n";
-    return true;
 }
 
 int Ptr::type_dump() const {

@@ -24,8 +24,8 @@ public:
 
     BinInp &operator>>( std::string &res ) {
         int size = read();
-        char *_ata = new char[ ceil( size, 4 ) ];
-        read( _ata, ceil( size, 4 ) );
+        char *_ata = new char[ size ];
+        read( _ata, size );
         res.assign( _ata, _ata + size );
         delete [] _ata;
         return *this;

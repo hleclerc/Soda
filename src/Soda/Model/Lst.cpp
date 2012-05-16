@@ -30,16 +30,15 @@ void Lst::write_dmp( BinOut &out ) const {
         out << _data[ i ];
 }
 
-void Lst::write_ujs( Stream &out, Session *session ) const {
-    // need creation ?
+bool Lst::write_ujs( Stream &nut, Stream &uut, Session *session ) const {
     for( int i = 0; i < _data.size(); ++i )
-        if ( not _data[ i ]->watching_sessions.has( session ) )
-            _data[ i ]->write_njs( out, 0, session );
-    // Lst instructions
-    out << "var tmp = FileSystem._objects[ " << this << " ];\n";
+        if ( not _data[ i ]->write_njs( nut, uut, session ) )
+            return false;
+    uut << "var tmp = FileSystem._objects[ " << this << " ];\n";
     for( int i = 0; i < _data.size(); ++i )
-        out << "tmp.set_or_push( " << i << ", FileSystem._objects[ " << _data[ i ] << " ] );\n";
-    out << "tmp.trim( " << _data.size() << " );\n";
+        uut << "tmp.set_or_push( " << i << ", FileSystem._objects[ " << _data[ i ] << " ] );\n";
+    uut << "tmp.trim( " << _data.size() << " );\n";
+    return true;
 }
 
 Nstring Lst::type() const {
@@ -52,16 +51,6 @@ int Lst::nb_attr() const {
 
 Model *Lst::attr( int index ) const {
     return _data[ index ];
-}
-
-bool Lst::_write_njs( Stream &out, int var, Session *session ) const {
-    out << "var v_" << var << " = new " << type() << ";\n";
-    for( int i = 0; i < _data.size(); ++i ) {
-        if ( not _data[ i ]->write_njs( out, var + 1, session ) )
-            return false;
-        out << "v_" << var << ".push( v_" << var + 1 << " );\n";
-    }
-    return true;
 }
 
 bool Lst::_set( const TmpModelMap &mm, StringBlk n ) {
