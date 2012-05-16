@@ -7,12 +7,13 @@
 */
 class Ptr : public Model {
 public:
-    Ptr( RightSet rights, SessionSet watching_sessions, SI64 man = 0 );
+    Ptr( RightSet rights, SessionSet watching_sessions, PI64 man = 0 );
     Ptr( BinInp *inp, RightSet rights, SessionSet watching_sessions );
 
     virtual void write_str( Stream &out ) const;
     virtual void write_dmp( BinOut &out ) const;
     virtual bool write_ujs( Stream &nut, Stream &uut, Session *s ) const;
+    virtual bool write_usr( BinOut &nut, BinOut &uut, Session *s ) const;
     virtual operator SI64() const;
     virtual int type_dump() const;
     virtual Nstring type() const;
@@ -23,7 +24,7 @@ public:
     Model *get_model() { return (Model *)man; }
     void set_model( Model *m ) { man = (SI64)m; }
 
-    SI64 man;
+    PI64 man;
 };
 
 #endif // PTR_H

@@ -33,11 +33,16 @@ void Val::write_dmp( BinOut &out ) const {
 bool Val::write_ujs( Stream &nut, Stream &uut, Session *s ) const {
     if ( exp ) {
         if ( exp == std::numeric_limits<SI32>::max() ) // NaN
-            uut << "FileSystem._objects[ " << this << " ].set( NaN );\n";
+            uut << "FileSystem._objects[" << this << "].set(NaN);\n";
         else
-            uut << "FileSystem._objects[ " << this << " ].set( " << man << " * Math.pow( 10, " << exp << " ) );\n";
+            uut << "FileSystem._objects[" << this << "].set(" << man << "*Math.pow(10," << exp << "));\n";
     } else
-        uut << "FileSystem._objects[ " << this << " ].set( " << man << " );\n";
+        uut << "FileSystem._objects[" << this << "].set(" << man << ");\n";
+    return true;
+}
+
+bool Val::write_usr( BinOut &nut, BinOut &uut, Session *s ) const {
+    TODO;
     return true;
 }
 

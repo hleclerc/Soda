@@ -21,7 +21,7 @@ bool Model::write_njs( Stream &nut, Stream &uut, Session *session ) const {
         watching_sessions << session;
         if ( not write_ujs( nut, uut, session ) )
             return false;
-        nut << "_w( " << this << ",new " << type() << ");\n";
+        nut << "_w(" << this << ",new " << type() << ");\n";
     }
     return true;
 }

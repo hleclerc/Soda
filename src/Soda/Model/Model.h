@@ -57,7 +57,7 @@ public:
     virtual void write_str( Stream &out ) const = 0;
     virtual void write_dmp( BinOut &out ) const = 0;
     virtual bool write_ujs( Stream &nut, Stream &uut, Session *s ) const = 0; ///< update object (call set, push, ...) in javascript
-    virtual bool write_usr( BinOut &nut, BinOut &uut, Session *s ) const { return true; } ///< update object
+    virtual bool write_usr( BinOut &nut, BinOut &uut, Session *s ) const = 0; ///< update object
 
     bool write_njs( Stream &nut, Stream &uut, Session *s ) const; ///<
     bool write_nsr( BinOut &nut, BinOut &uut, Session *s ) const; ///< code for new var

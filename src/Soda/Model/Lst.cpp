@@ -41,6 +41,16 @@ bool Lst::write_ujs( Stream &nut, Stream &uut, Session *session ) const {
     return true;
 }
 
+bool Lst::write_usr( BinOut &nut, BinOut &uut, Session *session ) const {
+    for( int i = 0; i < _data.size(); ++i )
+        if ( not _data[ i ]->write_nsr( nut, uut, session ) )
+            return false;
+    for( int i = 0; i < _data.size(); ++i )
+        uut << 'P' << PI64( _data[ i ] );
+    uut << 'U' << PI64( this ) << PI32( _data.size() );
+    return true;
+}
+
 Nstring Lst::type() const {
     return NSTRING_Lst;
 }

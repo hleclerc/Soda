@@ -26,6 +26,11 @@ bool Str::write_ujs( Stream &nut, Stream &uut, Session *s ) const {
     return true;
 }
 
+bool Str::write_usr( BinOut &nut, BinOut &uut, Session *s ) const {
+    TODO;
+    return true;
+}
+
 void Str::write_dmp( BinOut &out ) const {
     out << _data;
 }

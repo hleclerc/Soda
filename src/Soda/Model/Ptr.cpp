@@ -6,7 +6,7 @@
 #include "../Sys/Stream.h"
 #include "Ptr.h"
 
-Ptr::Ptr( RightSet rights, SessionSet watching_sessions, SI64 man ) : Model( rights, watching_sessions ), man( man ) {
+Ptr::Ptr( RightSet rights, SessionSet watching_sessions, PI64 man ) : Model( rights, watching_sessions ), man( man ) {
 }
 
 Ptr::Ptr( BinInp *inp, RightSet rights, SessionSet watching_sessions ) : Model( rights, watching_sessions ) {
@@ -27,6 +27,11 @@ void Ptr::write_dmp( BinOut &out ) const {
 
 bool Ptr::write_ujs( Stream &nut, Stream &uut, Session * ) const {
     uut << "FileSystem._objects[ " << this << " ].set( " << man << " );\n";
+    return true;
+}
+
+bool Ptr::write_usr( BinOut &nut, BinOut &uut, Session *s ) const {
+    uut << 'V' << PI64( this ) << PI64( man );
     return true;
 }
 

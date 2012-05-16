@@ -15,6 +15,7 @@ public:
     virtual void write_str( Stream &out ) const;
     virtual void write_dmp( BinOut &out ) const;
     virtual bool write_ujs( Stream &nut, Stream &uut, Session *s ) const;
+    virtual bool write_usr( BinOut &nut, BinOut &uut, Session *s ) const;
     virtual bool equal( StringBlk name ) const;
     virtual Nstring type() const;
 

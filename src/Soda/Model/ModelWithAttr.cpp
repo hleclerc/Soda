@@ -50,6 +50,11 @@ bool ModelWithAttr::write_ujs( Stream &nut, Stream &uut, Session *session ) cons
     return true;
 }
 
+bool ModelWithAttr::write_usr( BinOut &nut, BinOut &uut, Session *s ) const {
+    TODO;
+    return true;
+}
+
 void ModelWithAttr::write_str( Stream &out ) const {
     out << '[' << type() << "] ";
     for( int i = 0; i < _data.size(); ++i )
