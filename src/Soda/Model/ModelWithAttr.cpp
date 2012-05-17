@@ -50,8 +50,15 @@ bool ModelWithAttr::write_ujs( Stream &nut, Stream &uut, Session *session ) cons
     return true;
 }
 
-bool ModelWithAttr::write_usr( BinOut &nut, BinOut &uut, Session *s ) const {
-    TODO;
+bool ModelWithAttr::write_usr( BinOut &nut, BinOut &uut, Session *session ) const {
+    for( int i = 0; i < _data.size(); ++i )
+        if ( not _data[ i ].val->write_nsr( nut, uut, session ) )
+            return false;
+    for( int i = 0; i < _data.size(); ++i ) {
+        uut << 'P' << PI64( _data[ i ].val );
+        uut << 'p' << String( _data[ i ].key );
+    }
+    uut << 'U' << PI64( this ) << PI32( _data.size() );
     return true;
 }
 

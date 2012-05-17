@@ -27,7 +27,7 @@ bool Str::write_ujs( Stream &nut, Stream &uut, Session *s ) const {
 }
 
 bool Str::write_usr( BinOut &nut, BinOut &uut, Session *s ) const {
-    TODO;
+    uut << 'W' << PI64( this ) << _data;
     return true;
 }
 
