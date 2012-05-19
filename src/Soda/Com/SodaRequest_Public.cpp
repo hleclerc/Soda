@@ -9,10 +9,6 @@ SodaRequest_Public::SodaRequest_Public( int fd, ServerLoop *loop ) : EventObj_WO
 }
 
 void SodaRequest_Public::cmd_load( int n_callback, char *path_str, int path_len ) {
-    std::cout << "LOAD ";
-    std::cout.write( path_str, path_len );
-    std::cout << std::endl;
-
     if ( session and session->user ) {
         if ( Model *m = session->operator[]( StringBlk( path_str, path_len ) ) ) {
             BinOut c;
@@ -27,7 +23,7 @@ void SodaRequest_Public::cmd_load( int n_callback, char *path_str, int path_len 
 }
 
 void SodaRequest_Public::cmd_end() {
-    std::cout << "END" << std::endl;
+    //std::cout << "CMD END" << b.size() << std::endl;
 
     send_str( b.data(), b.size() );
     b.clear();

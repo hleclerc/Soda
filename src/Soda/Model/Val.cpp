@@ -42,7 +42,7 @@ bool Val::write_ujs( Stream &nut, Stream &uut, Session *s ) const {
 }
 
 bool Val::write_usr( BinOut &nut, BinOut &uut, Session *s ) const {
-    uut << 'W' << PI64( this ) << man << exp;
+    uut << 'X' << PI64( this ) << man << exp;
     return true;
 }
 
