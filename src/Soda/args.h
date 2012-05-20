@@ -8,6 +8,7 @@ BARG( 'v', verbose , "will give more information", false );
 BARG( 'L', launch_browser_super, "after the server start, launch a browser on the supervision page", false );
 BARG( 'l', launch_browser      , "after the server start, launch a browser on the public page (see -s)", false );
 SARG( 's', start_page          , "start page for the browser on the public data", "/" );
+SARG( 't', title_page          , "title of the page used for xdotool", 0 );
 
 SARG( 'P', super_port, "http port for supervision" , "8889" );
 SARG( 'p', port      , "http port for public pages", "8888" );

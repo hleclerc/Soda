@@ -74,6 +74,7 @@ bool ServerLoop::timeout() {
         update_dl.sy_req( http_listener );
         if ( launch_browser ) {
             http_listener->start_url = start_page;
+            http_listener->title = title_page;
             http_listener->launch_browser();
         }
     }

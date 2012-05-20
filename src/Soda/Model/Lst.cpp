@@ -80,4 +80,6 @@ void Lst::_map_ptr( const MapRead &map_read ) {
     for( int i = 0; i < _data.size(); ++i )
         if ( ( _data[ i ] = map_read[ _data[ i ] ] ) )
             _data[ i ]->map_ptr( map_read );
+        else
+            _data.remove( i-- );
 }

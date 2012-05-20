@@ -101,5 +101,7 @@ void ModelWithAttr::_map_ptr( const MapRead &map_read ) {
         _data[ i ].val = map_read[ _data[ i ].val ];
         if ( _data[ i ].val )
             _data[ i ].val->map_ptr( map_read );
+        else
+            _data.remove( i-- );
     }
 }
