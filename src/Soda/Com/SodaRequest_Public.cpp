@@ -8,7 +8,7 @@ SodaRequest_Public::SodaRequest_Public( int fd, ServerLoop *loop ) : EventObj_WO
     session = loop->database->session_allocator.factory( loop->database, loop->database->root_usr );
 }
 
-void SodaRequest_Public::cmd_load( int n_callback, char *path_str, int path_len ) {
+void SodaRequest_Public::cmd_load( int n_callback, const char *path_str, int path_len ) {
     if ( session and session->user ) {
         if ( Model *m = session->operator[]( StringBlk( path_str, path_len ) ) ) {
             BinOut c;

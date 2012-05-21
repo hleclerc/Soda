@@ -14,7 +14,7 @@ public:
     SodaRequest_Public( int fd, ServerLoop *loop );
 
 protected:
-    void cmd_load( int n_callback, char *path_str, int path_len );
+    void cmd_load( int n_callback, const char *path_str, int path_len );
     void cmd_end();
 
     #define SIPE_CHARP char *
