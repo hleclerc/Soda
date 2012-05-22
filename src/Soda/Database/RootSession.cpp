@@ -81,6 +81,7 @@ void RootSession::_load( const char *db_filename ) {
         int t = inp.read();
         if ( not inp ) break;
 
+        // PRINT( t );
         if ( t == Model::_DbFileVersion ) {
             reading_with_file_version = inp.read();
         } else if ( t == Model::_RootDir ) {

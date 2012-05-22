@@ -5,6 +5,9 @@
 #include <string>
 #include "Math.h"
 
+#include "../Sys/Stream.h"
+#include <stdlib.h>
+
 /**
 */
 class BinInp {
@@ -22,6 +25,7 @@ public:
     operator bool() const { return _f and ok; }
     void close() { _f.close(); }
 
+    ///<
     BinInp &operator>>( std::string &res ) {
         int size = read();
         char *_ata = new char[ size ];
@@ -31,23 +35,22 @@ public:
         return *this;
     }
 
+    ///<
     template<class T>
     BinInp &operator>>( T &res ) {
-        int r = _f.readsome( reinterpret_cast<char *>( &res ), sizeof res );
-        ok &= r == sizeof( res );
+        read( reinterpret_cast<char *>( &res ), sizeof( T ) );
         return *this;
     }
 
+    ///< Ex: MyType a = bininp.read();
     L read() {
         L l;
         l.b = this;
         return l;
     }
 
-    int read( char *data, int size ) {
-        int r = _f.readsome( data, size );
-        ok &= r == size;
-        return r;
+    void read( char *data, int size ) {
+        _f.read( data, size );
     }
 
 protected:
