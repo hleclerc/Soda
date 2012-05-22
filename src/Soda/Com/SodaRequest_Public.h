@@ -13,8 +13,11 @@ class Session;
 class SodaRequest_Public : public EventObj_WO {
 public:
     SodaRequest_Public( int fd, ServerLoop *loop );
+    virtual ~SodaRequest_Public();
 
+    virtual bool cnt_default_value() const;
     void send(); ///< send data in b
+
     BinOut b;
 protected:
     void cmd_reg_type( int n_callback, const char *type_str, int type_len );
