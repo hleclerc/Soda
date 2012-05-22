@@ -11,7 +11,7 @@ cmp: install_dir ext/Celo ext/PrepArg src/Soda/Com/HttpRequest_Supervision_parse
 test_%:
 	${MC} tests/$@.cpp
 
-%.h: %.sipe ext/Sipe
+%.h: %.sipe ext/Sipe ext/Sipe/src/Sipe/Predef.sipe
 	make -C ext/Sipe
 	ext/Sipe/sipe -o $@ $<
 

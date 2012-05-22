@@ -14,6 +14,7 @@ public:
     SodaRequest_Public( int fd, ServerLoop *loop );
 
 protected:
+    void cmd_reg_type( int n_callback, const char *type_str, int type_len );
     void cmd_load( int n_callback, const char *path_str, int path_len );
     void cmd_end();
 
