@@ -10,7 +10,6 @@ class HttpRequest_Public;
 class JavascriptSession : public Session {
 public:
     JavascriptSession( Database *db, User *user, int num_inst );
-    virtual void on_reg_type( Model *m );
     virtual void on_change( Model *m );
     virtual void end_round();
     void rq_chan_and_close_pc();

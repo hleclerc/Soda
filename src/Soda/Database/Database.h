@@ -16,8 +16,8 @@ public:
     ~Database();
 
     Model *add_to_new_mod_list( Model *m, Session *s, Nstring type ); ///< when a new Model is created
+    void reg_type( StringBlk type, Session *s, int c );
     Model *add_to_mod_list( Model *m, Session *s );
-    void reg_type( StringBlk type, Session *s );
     Session *add_to_sod_list( Session *s );
     String new_file( User *user );
     void end_round();
@@ -34,7 +34,12 @@ public:
     Model *mod_list; ///< last object that has been modified during the prededing round(s)
     User *root_usr;
 
-    std::map<Nstring,Vec<Session *> > reg_types;
+    struct SessionAndCallback {
+        Session *session;
+        int callback;
+    };
+
+    std::map<Nstring,Vec<SessionAndCallback> > reg_types;
 };
 
 #endif // DATABASE_H

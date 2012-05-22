@@ -21,14 +21,12 @@ Database::~Database() {
 }
 
 Model *Database::add_to_new_mod_list( Model *m, Session *s, Nstring type ) {
-    std::map<Nstring,Vec<Session *> >::const_iterator iter = reg_types.find( type );
-    PRINT( type );
+    std::map<Nstring,Vec<SessionAndCallback> >::const_iterator iter = reg_types.find( type );
     if ( iter != reg_types.end() ) {
         for( int i = 0; i < iter->second.size(); ++i ) {
-            Session *s = add_to_sod_list( iter->second[ i ] );
-            s->on_reg_type( m );
+            Session *s = add_to_sod_list( iter->second[ i ].session );
+            s->on_reg_type( m, iter->second[ i ].callback );
         }
-
     }
     return add_to_mod_list( m, s );
 }
@@ -52,8 +50,11 @@ Session *Database::add_to_sod_list( Session *s ) {
     return s;
 }
 
-void Database::reg_type( StringBlk type, Session *s ) {
-    reg_types[ nstring_list( type ) ] << s;
+void Database::reg_type( StringBlk type, Session *s, int c ) {
+    SessionAndCallback sc;
+    sc.session = s;
+    sc.callback = c;
+    reg_types[ nstring_list( type ) ] << sc;
 }
 
 void Database::end_round() {

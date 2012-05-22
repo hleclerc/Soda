@@ -5,11 +5,13 @@ cmd_load_ptr    = 'l ' uint[ v ] ' ' uint[ u ] ' ' { cmd_load_ptr( sipe_data->v,
 cmd_change      = 'C ' uint[ v ] ' ' word[ w ] ' ' { cmd_change( sipe_data->v, sipe_data->w ); }
 
 cmd_reg_type    = 'R' uint32_bin_le[ v ] str_32[ l, s ] { cmd_reg_type( sipe_data->v, sipe_data->s.data(), sipe_data->l ); }
+cmd_load_ptr    = 'l' uint32_bin_le[ v ] uint64_bin_le[ m, __type__ = 'PI64' ] { cmd_load_ptr( sipe_data->v, sipe_data->m ); }
 cmd_load        = 'L' uint32_bin_le[ v ] str_32[ l, s ] { cmd_load( sipe_data->v, sipe_data->s.data(), sipe_data->l ); }
 cmd_end         = 'E' { cmd_end(); }
 
 main = (
     cmd_reg_type |
+    cmd_load_ptr |
     cmd_load |
     cmd_end
 )**

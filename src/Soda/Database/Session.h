@@ -20,7 +20,7 @@ class Session {
 public:
     Session( Database *db, User *user );
 
-    virtual void on_reg_type( Model *m ); ///< what to do if model creation of registered type
+    virtual void on_reg_type( Model *m, int n_callback ); ///< what to do if model creation of registered type
     virtual void on_change( Model *m ); ///< what to do if m has changed during the previous round
     virtual void end_round(); ///<
 

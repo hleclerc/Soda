@@ -31,7 +31,7 @@ Session::Session( Database *db, User *user ) : db( db ), user( user ) {
     cwd << db->root_dir; ///< we start with '/' as current directory
 }
 
-void Session::on_reg_type( Model *m ) {
+void Session::on_reg_type( Model *m, int n_callback ) {
 }
 
 void Session::on_change( Model *m ) {
@@ -60,7 +60,7 @@ Model *Session::factory( Nstring type ) {
 
     // else -> ModelWithAttrAndName
     ModelWithAttrAndName *res = db->model_allocator.factory( default_rights, default_watching_sessions, type );
-    return db->add_to_mod_list( res, this );
+    return db->add_to_new_mod_list( res, this, type );
 }
 
 Model *Session::operator[]( StringBlk path ) {

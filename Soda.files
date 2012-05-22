@@ -87,3 +87,5 @@ src/Soda/Model/Path.h
 src/Soda/Model/Path.cpp
 src/Soda/Model/Bool.h
 src/Soda/Model/Bool.cpp
+src/Soda/Database/SodaSession.h
+src/Soda/Database/SodaSession.cpp
