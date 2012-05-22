@@ -31,6 +31,9 @@ Session::Session( Database *db, User *user ) : db( db ), user( user ) {
     cwd << db->root_dir; ///< we start with '/' as current directory
 }
 
+void Session::on_reg_type( Model *m ) {
+}
+
 void Session::on_change( Model *m ) {
 }
 
@@ -50,7 +53,7 @@ Model *Session::factory( BinInp &inp, int t, RightSet rights ) {
 Model *Session::factory( Nstring type ) {
     #define DECL( M ) if ( type == NSTRING_##M ) { \
         M *res = db->model_allocator.factory( default_rights, default_watching_sessions ); \
-        return db->add_to_mod_list( res, this ); \
+        return db->add_to_new_mod_list( res, this, type ); \
     }
     #include "../Model/Model_decl.h"
     #undef DECL

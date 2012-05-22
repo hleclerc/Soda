@@ -20,6 +20,19 @@ Database::Database( const char *db_directory ) : db_directory( db_directory ) {
 Database::~Database() {
 }
 
+Model *Database::add_to_new_mod_list( Model *m, Session *s, Nstring type ) {
+    std::map<Nstring,Vec<Session *> >::const_iterator iter = reg_types.find( type );
+    PRINT( type );
+    if ( iter != reg_types.end() ) {
+        for( int i = 0; i < iter->second.size(); ++i ) {
+            Session *s = add_to_sod_list( iter->second[ i ] );
+            s->on_reg_type( m );
+        }
+
+    }
+    return add_to_mod_list( m, s );
+}
+
 Model *Database::add_to_mod_list( Model *m, Session *s ) {
     if ( not m->in_mod_list ) {
         m->in_mod_list = true;
@@ -37,6 +50,10 @@ Session *Database::add_to_sod_list( Session *s ) {
         sod_list = s;
     }
     return s;
+}
+
+void Database::reg_type( StringBlk type, Session *s ) {
+    reg_types[ nstring_list( type ) ] << s;
 }
 
 void Database::end_round() {

@@ -9,7 +9,8 @@ SodaRequest_Public::SodaRequest_Public( int fd, ServerLoop *loop ) : EventObj_WO
 }
 
 void SodaRequest_Public::cmd_reg_type( int n_callback, const char *type_str, int type_len ) {
-    PRINT( StringBlk( type_str, type_len ) );
+    if ( session and session->user )
+        session->db->reg_type( StringBlk( type_str, type_len ), session );
 }
 
 void SodaRequest_Public::cmd_load( int n_callback, const char *path_str, int path_len ) {

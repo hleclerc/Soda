@@ -6,6 +6,10 @@ JavascriptSession::JavascriptSession( Database *db, User *user, int num_inst ) :
     list = 0;
 }
 
+void JavascriptSession::on_reg_type( Model *m ) {
+    PRINT( "yop !" );
+}
+
 void JavascriptSession::on_change( Model *m ) {
     if ( m->mod_session != this ) {
         Stream &nut = push_channel ? push_channel->out : data_to_push;
