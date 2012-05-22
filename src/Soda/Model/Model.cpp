@@ -27,9 +27,8 @@ bool Model::write_njs( Stream &nut, Stream &uut, Session *session ) const {
 }
 
 bool Model::write_nsr( BinOut &nut, BinOut &uut, Session *session ) const {
-    PRINT( rights.has( session->user, RD ) );
-    //if ( not rights.has( session->user, RD ) )
-    //    return false;
+    if ( not rights.has( session->user, RD ) )
+        return false;
     if ( not watching_sessions.has( session ) ) {
         watching_sessions << session;
         if ( not write_usr( nut, uut, session ) )

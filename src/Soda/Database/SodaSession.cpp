@@ -6,7 +6,7 @@ SodaSession::SodaSession( Database *db, User *user, SodaRequest_Public *req ) : 
 }
 
 void SodaSession::on_reg_type( Model *m, int n_callback ) {
-    req->b << 'R' << SI64( m ) << n_callback;
+    req->b << 'R' << PI64( m ) << n_callback;
 }
 
 void SodaSession::on_change( Model *m ) {

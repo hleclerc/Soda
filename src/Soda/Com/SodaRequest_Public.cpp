@@ -44,6 +44,9 @@ void SodaRequest_Public::cmd_end() {
 }
 
 void SodaRequest_Public::send() {
-    send_str( b.data(), b.size() );
-    b.clear();
+    if ( b.size() ) {
+        PRINT( b.size() );
+        send_str( b.data(), b.size() );
+        b.clear();
+    }
 }
