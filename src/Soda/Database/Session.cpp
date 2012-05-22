@@ -3,6 +3,7 @@
 #include "../Model/File.h"
 #include "../Model/User.h"
 #include "../Model/Path.h"
+#include "../Model/Bool.h"
 #include "../Model/Val.h"
 #include "../Model/Str.h"
 #include "../Model/Ptr.h"

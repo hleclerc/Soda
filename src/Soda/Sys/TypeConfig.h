@@ -7,7 +7,7 @@ typedef float       FP32;
 typedef double      FP64;
 typedef long double FP80;
 
-typedef bool        Bool;
+// typedef bool        Bool;
 
 typedef int8_t      SI8 ;
 typedef int16_t     SI16;

@@ -27,6 +27,7 @@ public:
     void cmd_creation( const String &type, ST tmp_id ); ///<
     void cmd_load_ptr( ST ptr_model, int num_callback ); ///<
     int  cmd_put_cnt( PT ptr_session, PT ptr_model, PT &length, const char *beg, const char *end ); //<
+    void cmd_set_type( ST ptr_model, const String &type ); ///< set type for object creation
     void cmd_change( ST ptr_model, const String &data ); ///<
     void cmd_load( const String &path, int num_callback ); ///<
     int  cmd_put( PT ptr_session, PT ptr_model, PT &length, const char *beg, const char *end );

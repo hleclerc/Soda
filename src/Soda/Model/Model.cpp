@@ -21,7 +21,7 @@ bool Model::write_njs( Stream &nut, Stream &uut, Session *session ) const {
         watching_sessions << session;
         if ( not write_ujs( nut, uut, session ) )
             return false;
-        nut << "_w(" << this << ",new " << type() << ");\n";
+        nut << "_w(" << this << ",new " << js_type() << ");\n";
     }
     return true;
 }
@@ -47,6 +47,8 @@ Model::operator SI64() const { return 0; }
 Model::operator String() const { return String(); }
 
 bool Model::equal( StringBlk name ) const { TODO; std::cout << type() << std::endl; return false; }
+
+Nstring Model::js_type() const { return _js_type ? _js_type : type(); }
 
 const Database *Model::db() const { return *watching_sessions; }
 Database *Model::db() { return *watching_sessions; }

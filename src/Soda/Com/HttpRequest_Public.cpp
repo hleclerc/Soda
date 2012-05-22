@@ -82,6 +82,13 @@ void HttpRequest_Public::cmd_creation( const String &type, ST tmp_id ) {
     }
 }
 
+void HttpRequest_Public::cmd_set_type( ST ptr_model, const String &type ) {
+    if ( session and session->user )
+        if ( Model *m = tmp_map[ ptr_model ] )
+            if ( m->rights.has( session->user, WR ) )
+                m->_js_type = session->db->nstring_list( type.data(), type.size() );
+}
+
 void HttpRequest_Public::cmd_change( ST ptr_model, const String &data ) {
     if ( session and session->user )
         if ( Model *m = tmp_map[ ptr_model ] )

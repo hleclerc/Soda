@@ -44,7 +44,7 @@ int Ptr::type_dump() const {
 }
 
 bool Ptr::_set( const TmpModelMap &mm, StringBlk data ) {
-    SI64 oman = man;
+    PI64 oman = man;
 
     man = 0;
     for( int i = 0; i < data.size(); ++i ) {

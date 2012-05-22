@@ -53,6 +53,7 @@ public:
 
     virtual int type_dump() const = 0;
     virtual Nstring type() const = 0;
+    Nstring js_type() const;
 
     virtual void write_str( Stream &out ) const = 0;
     virtual void write_dmp( BinOut &out ) const = 0;
@@ -72,6 +73,7 @@ public:
     Session           *mod_session; ///< session that made the last change (0 means no change)
     Model             *next_mod; ///< next model in mod_list (mod_session != 0 means that *this is inside a mod_list)
     RightSet           rights;
+    Nstring            _js_type; ///<
 
     static PI64        cur_op_id; ///<
     PI64               op_id; ///<

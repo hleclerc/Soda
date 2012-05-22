@@ -65,7 +65,7 @@ bool Val::_set( const TmpModelMap &mm, StringBlk data ) {
         // -
         int i = 0;
         bool minus = false;
-        if ( data[ i ] == '-' ) {
+        if ( i < data.size() and data[ i ] == '-' ) {
             minus = true;
             ++i;
         }
@@ -77,8 +77,6 @@ bool Val::_set( const TmpModelMap &mm, StringBlk data ) {
                 break;
             man = 10 * man + ( data[ i ] - '0' );
         }
-        if ( minus )
-            man = -man;
 
         // .
         exp = 0;
@@ -106,6 +104,9 @@ bool Val::_set( const TmpModelMap &mm, StringBlk data ) {
             if ( minus )
                 exp = -exp;
         }
+
+        if ( minus )
+            man = -man;
     }
 
     return oman != man or oexp != exp;

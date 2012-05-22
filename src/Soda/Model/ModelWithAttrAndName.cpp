@@ -19,6 +19,7 @@ Nstring ModelWithAttrAndName::type() const {
     return _type;
 }
 
+
 void ModelWithAttrAndName::_map_ptr( const MapRead &map_read ) {
     ModelWithAttr::_map_ptr( map_read );
     _type = map_read[ _type ];

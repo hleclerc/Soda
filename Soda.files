@@ -85,3 +85,5 @@ src/Soda/Com/SodaRequest_Public_parser.sipe
 src/Soda/Sys/BinOutGen.h
 src/Soda/Model/Path.h
 src/Soda/Model/Path.cpp
+src/Soda/Model/Bool.h
+src/Soda/Model/Bool.cpp

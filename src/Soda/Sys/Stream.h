@@ -7,7 +7,7 @@
 
 template<class O,class R> struct ShouldBeDisplayedWriteToStream { typedef R T; };
 
-template<class R> struct ShouldBeDisplayedWriteToStream<Bool,R> {};
+template<class R> struct ShouldBeDisplayedWriteToStream<bool,R> {};
 template<class R> struct ShouldBeDisplayedWriteToStream<char,R> {};
 
 template<class R> struct ShouldBeDisplayedWriteToStream<SI8 ,R> {};
