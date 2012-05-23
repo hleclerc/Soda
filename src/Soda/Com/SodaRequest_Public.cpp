@@ -9,7 +9,6 @@ SodaRequest_Public::SodaRequest_Public( int fd, ServerLoop *loop ) : EventObj_WO
 }
 
 SodaRequest_Public::~SodaRequest_Public() {
-    PRINT( "DEL" );
 }
 
 void SodaRequest_Public::cmd_reg_type( int n_callback, const char *type_str, int type_len ) {
@@ -53,7 +52,6 @@ bool SodaRequest_Public::cnt_default_value() const {
 
 void SodaRequest_Public::send() {
     if ( b.size() ) {
-        PRINT( b.size() );
         send_str( b.data(), b.size() );
         b.clear();
     }
