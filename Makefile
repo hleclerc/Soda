@@ -4,14 +4,14 @@ INSTALL_DIR = `pwd`
 all: cmp
 
 # compilation of the soda server
-cmp: install_dir ext/Celo ext/PrepArg src/Soda/Com/HttpRequest_Supervision_parser.h src/Soda/Com/SodaRequest_Public_parser.h
+cmp: install_dir ext/Sipe ext/Celo ext/PrepArg src/Soda/Com/HttpRequest_Supervision_parser.h src/Soda/Com/SodaRequest_Public_parser.h
 	${MC} -o soda -ne src/Soda/soda.cpp
 
 #
 test_%:
 	${MC} tests/$@.cpp
 
-%.h: %.sipe ext/Sipe ext/Sipe/src/Sipe/Predef.sipe
+%.h: %.sipe ext/Sipe/src/Sipe/Predef.sipe
 	make -C ext/Sipe
 	ext/Sipe/sipe -o $@ $<
 
