@@ -80,6 +80,12 @@ void Database::end_round() {
     sod_list = 0;
 }
 
+void Database::remove_refs_to( Session *s ) {
+    for( std::map<Nstring,Vec<SessionAndCallback> >::iterator iter = reg_types.begin(); iter != reg_types.end(); ++iter )
+        for( int i = 0; i < iter->second.size(); ++i )
+            if ( iter->second[ i ].session == s )
+                iter->second.remove( i-- );
+}
 
 String Database::new_file( User *user ) {
     // base

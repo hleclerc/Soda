@@ -19,6 +19,7 @@ public:
     void reg_type( StringBlk type, Session *s, int c );
     Model *add_to_mod_list( Model *m, Session *s );
     Session *add_to_sod_list( Session *s );
+    void remove_refs_to( Session *s );
     String new_file( User *user );
     void end_round();
 
