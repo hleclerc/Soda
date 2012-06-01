@@ -97,6 +97,7 @@ void HttpRequest_Public::cmd_change( ST ptr_model, const String &data ) {
 }
 
 void HttpRequest_Public::cmd_load_ptr( ST ptr_model, int num_callback ) {
+    PRINT( ptr_model );
     if ( session and session->user )  {
         if ( Model *m = tmp_map[ ptr_model ] ) {
             std::ostringstream uut;
@@ -112,6 +113,7 @@ void HttpRequest_Public::cmd_load_ptr( ST ptr_model, int num_callback ) {
 }
 
 void HttpRequest_Public::cmd_load( const String &path, int num_callback ) {
+    PRINT( path );
     if ( session and session->user )  {
         if ( Model *m = session->operator[]( StringBlk( path.data(), path.size() ) ) ) {
             std::ostringstream uut;
