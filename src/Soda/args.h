@@ -7,6 +7,7 @@ BARG( 'v', verbose , "will give more information", false );
 
 BARG( 'L', launch_browser_super, "after the server start, launch a browser on the supervision page", false );
 BARG( 'l', launch_browser      , "after the server start, launch a browser on the public page (see -s)", false );
+SARG( 'C', launch_command      , "after the server start, launch a command", 0 );
 SARG( 's', start_page          , "start page for the browser on the public data", "/" );
 SARG( 't', title_page          , "title of the page used for xdotool", 0 );
 

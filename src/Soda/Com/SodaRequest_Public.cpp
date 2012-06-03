@@ -19,9 +19,7 @@ void SodaRequest_Public::cmd_reg_type( int n_callback, const char *type_str, int
 
 void SodaRequest_Public::cmd_load_ptr( int n_callback, PI64 ptr ) {
     if ( session and session->user ) {
-        PRINT( ptr );
         if ( Model *m = session->db->model_allocator.check( reinterpret_cast<Model *>( ptr ) ) ) {
-            PRINT( "ptr" );
             BinOut c;
             if ( m->write_nsr( b, c, session ) ) { // <- checks rights
                 b << c << 'L' << SI64( m ) << n_callback;

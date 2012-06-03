@@ -31,6 +31,7 @@ int ServerLoop::run() {
     // fake http listener (will be replaced by a generated dlopen'ed one)
     Listener_Factory<HttpRequest_Public,ServerLoop> f( port, this );
     http_listener = &f;
+    //f.
     *ev_loop << &f;
 
     // listener binary stream
@@ -77,6 +78,8 @@ bool ServerLoop::timeout() {
             http_listener->title = title_page;
             http_listener->launch_browser();
         }
+        if ( launch_command )
+            system( launch_command );
     }
 
     // outdating channel
