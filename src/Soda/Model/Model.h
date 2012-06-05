@@ -82,6 +82,7 @@ public:
 
     virtual bool _set( const TmpModelMap &mm, StringBlk data ) = 0; ///< return true if real change
     virtual void _map_ptr( const MapRead &map_read ) = 0; ///< fake ptrs (from file) to real ptrs
+    virtual bool _set( PI64 man, SI32 exp );
 };
 
 #endif // MODEL_H

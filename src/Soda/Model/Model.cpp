@@ -69,3 +69,7 @@ void Model::rm_inactive_sessions() {
         }
     }
 }
+
+bool Model::_set( PI64 man, SI32 exp ) {
+    return false;
+}

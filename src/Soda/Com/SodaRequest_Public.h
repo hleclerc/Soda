@@ -20,6 +20,7 @@ public:
 
     BinOut b;
 protected:
+    void cmd_update_6432( PI64 model_id, SI64 man, SI32 exp );
     void cmd_reg_type( int n_callback, const char *type_str, int type_len );
     void cmd_load_ptr( int n_callback, PI64 ptr );
     void cmd_load( int n_callback, const char *path_str, int path_len );

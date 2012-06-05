@@ -12,6 +12,16 @@ SodaRequest_Public::~SodaRequest_Public() {
     loop->database->remove_refs_to( session );
 }
 
+void SodaRequest_Public::cmd_update_6432( PI64 model_id, SI64 man, SI32 exp ) {
+    PRINT( model_id );
+    PRINT( man );
+    PRINT( exp );
+    if ( session and session->user )
+        if ( Model *m = session->db->model_allocator.check( reinterpret_cast<Model *>( model_id ) ) )
+            if ( m->rights.has( session->user, WR ) and m->_set( man, exp ) )
+                session->db->add_to_mod_list( m, session );
+}
+
 void SodaRequest_Public::cmd_reg_type( int n_callback, const char *type_str, int type_len ) {
     if ( session and session->user )
         session->db->reg_type( StringBlk( type_str, type_len ), session, n_callback );
