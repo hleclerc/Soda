@@ -29,6 +29,7 @@ public:
 protected:
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
     virtual void _map_ptr( const MapRead &map_read );
+    virtual void _sweeper_rec( Sweeper &s );
 
     friend class MP;
     Vec<Item> _data;

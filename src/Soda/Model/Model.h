@@ -36,6 +36,9 @@ public:
         #include "Model_decl.h"
         #undef DECL
     };
+    struct Sweeper {
+        virtual void operator()( Model *m ) = 0;
+    };
 
     Model( RightSet rights, SessionSet watching_sessions );
     virtual ~Model();
@@ -65,6 +68,7 @@ public:
 
     void rm_inactive_sessions(); ///< rm from watching_sessions if s->inactive
     void map_ptr( const MapRead &map_read ); ///< fake ptrs (from file) to real ptrs
+    void sweep( Sweeper &s );
 
     const Database *db() const;
     Database *db();
@@ -82,7 +86,8 @@ public:
 
     virtual bool _set( const TmpModelMap &mm, StringBlk data ) = 0; ///< return true if real change
     virtual void _map_ptr( const MapRead &map_read ) = 0; ///< fake ptrs (from file) to real ptrs
-    virtual bool _set( PI64 man, SI32 exp );
+    virtual void _sweeper_rec( Sweeper &s ); ///<
+    virtual bool _set( SI64 man, SI32 exp );
 };
 
 #endif // MODEL_H

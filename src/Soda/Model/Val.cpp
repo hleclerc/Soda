@@ -116,7 +116,7 @@ void Val::_map_ptr( const MapRead &map_read ) {
     rights = map_read[ rights ];
 }
 
-bool Val::_set( PI64 a, SI32 b ) {
+bool Val::_set( SI64 a, SI32 b ) {
     if ( a != man or b != exp ) {
         man = a;
         exp = b;

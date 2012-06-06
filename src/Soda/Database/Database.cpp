@@ -1,4 +1,5 @@
 #include "../Sys/UsualStrings.h"
+#include "../Model/Directory.h"
 #include "../Model/User.h"
 #include "Database.h"
 #include <sys/stat.h>
@@ -50,11 +51,31 @@ Session *Database::add_to_sod_list( Session *s ) {
     return s;
 }
 
+struct FindObjOfType : Model::Sweeper {
+    virtual void operator()( Model *m ) {
+        if ( m->type() == n )
+            res.insert( m );
+    }
+    std::set<Model *> res;
+    Nstring n;
+};
+
 void Database::reg_type( StringBlk type, Session *s, int c ) {
+    FindObjOfType foot;
+    foot.n = nstring_list( type );
+
     SessionAndCallback sc;
     sc.session = s;
     sc.callback = c;
-    reg_types[ nstring_list( type ) ] << sc;
+    reg_types[ foot.n ] << sc;
+
+    // model of type $type already present in the database
+    root_dir->sweep( foot );
+    if ( foot.res.size() ) {
+        add_to_sod_list( s );
+        for( std::set<Model *>::iterator iter = foot.res.begin(); iter != foot.res.end(); ++iter )
+            s->on_reg_type( *iter, c );
+    }
 }
 
 void Database::end_round() {

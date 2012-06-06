@@ -20,6 +20,7 @@ public:
 
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
     virtual void _map_ptr( const MapRead &map_read );
+    virtual void _sweeper_rec( Sweeper &s );
 
     Model *get_model() { return (Model *)man; }
     void set_model( Model *m ) { man = (SI64)m; }

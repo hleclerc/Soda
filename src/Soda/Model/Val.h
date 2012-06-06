@@ -20,7 +20,7 @@ public:
 
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
     virtual void _map_ptr( const MapRead &map_read );
-    virtual bool _set( PI64 a, SI32 b );
+    virtual bool _set( SI64 a, SI32 b );
 
     SI64 man;
     SI32 exp;

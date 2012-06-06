@@ -70,3 +70,13 @@ void Ptr::_map_ptr( const MapRead &map_read ) {
         p->map_ptr( map_read );
 }
 
+void Ptr::_sweeper_rec( Sweeper &s ) {
+    if ( op_id != cur_op_id ) {
+        op_id = cur_op_id;
+        s( this );
+
+        if ( Model *q = db()->model_allocator.check( get_model() ) )
+            q->_sweeper_rec( s );
+    }
+}
+

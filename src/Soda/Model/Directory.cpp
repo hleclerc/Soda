@@ -1,5 +1,4 @@
 #include "../Database/Database.h"
-
 #include "../Sys/UsualStrings.h"
 
 #include "Directory.h"

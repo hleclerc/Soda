@@ -105,3 +105,15 @@ void ModelWithAttr::_map_ptr( const MapRead &map_read ) {
             _data.remove( i-- );
     }
 }
+
+void ModelWithAttr::_sweeper_rec( Sweeper &s ) {
+    if ( op_id != cur_op_id ) {
+        op_id = cur_op_id;
+        s( this );
+
+        for( int i = 0; i < _data.size(); ++i )
+            if ( Model *f = _data[ i ].val )
+                f->_sweeper_rec( s );
+    }
+}
+

@@ -13,9 +13,6 @@ SodaRequest_Public::~SodaRequest_Public() {
 }
 
 void SodaRequest_Public::cmd_update_6432( PI64 model_id, SI64 man, SI32 exp ) {
-    PRINT( model_id );
-    PRINT( man );
-    PRINT( exp );
     if ( session and session->user )
         if ( Model *m = session->db->model_allocator.check( reinterpret_cast<Model *>( model_id ) ) )
             if ( m->rights.has( session->user, WR ) and m->_set( man, exp ) )

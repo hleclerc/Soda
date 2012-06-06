@@ -60,6 +60,11 @@ void Model::map_ptr( const MapRead &map_read ) {
     }
 }
 
+void Model::sweep( Sweeper &s ) {
+    ++cur_op_id;
+    _sweeper_rec( s );
+}
+
 void Model::rm_inactive_sessions() {
     for( int i = 0; i < watching_sessions.size(); ++i ) {
         Session *w = watching_sessions[ i ];
@@ -70,6 +75,13 @@ void Model::rm_inactive_sessions() {
     }
 }
 
-bool Model::_set( PI64 man, SI32 exp ) {
+void Model::_sweeper_rec( Sweeper &s ) {
+    if ( op_id != cur_op_id ) {
+        op_id = cur_op_id;
+        s( this );
+    }
+}
+
+bool Model::_set( SI64 man, SI32 exp ) {
     return false;
 }
