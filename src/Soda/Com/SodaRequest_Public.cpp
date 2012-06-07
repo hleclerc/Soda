@@ -9,6 +9,7 @@ SodaRequest_Public::SodaRequest_Public( int fd, ServerLoop *loop ) : EventObj_WO
 }
 
 SodaRequest_Public::~SodaRequest_Public() {
+    session->inactive = true;
     loop->database->remove_refs_to( session );
 }
 
