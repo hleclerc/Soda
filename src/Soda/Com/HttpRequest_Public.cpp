@@ -113,7 +113,8 @@ void HttpRequest_Public::cmd_load_ptr( ST ptr_model, int num_callback ) {
 
 void HttpRequest_Public::cmd_load( const String &path, int num_callback ) {
     if ( session and session->user )  {
-        if ( Model *m = session->operator[]( StringBlk( path.data(), path.size() ) ) ) {
+        String npath = url_decode( path );
+        if ( Model *m = session->operator[]( StringBlk( npath.data(), npath.size() ) ) ) {
             std::ostringstream uut;
             if ( m->write_njs( out, uut, session ) ) { // <- checks rights
                 out << uut.str();
