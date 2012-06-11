@@ -27,6 +27,7 @@ public:
     virtual bool write_usr( BinOut &nut, BinOut &uut, Session *s ) const;
 
 protected:
+    virtual bool _set( int size, Vec<Model *> &model_stack, Vec<String> &string_stack );
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
     virtual void _map_ptr( const MapRead &map_read );
     virtual void _sweeper_rec( Sweeper &s );

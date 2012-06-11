@@ -60,6 +60,13 @@ bool Ptr::_set( const TmpModelMap &mm, StringBlk data ) {
     return oman != man;
 }
 
+bool Ptr::_set( PI64 nan ) {
+    if ( man == nan )
+        return false;
+    man = nan;
+    return true;
+}
+
 void Ptr::_map_ptr( const MapRead &map_read ) {
     rights = map_read[ rights ];
 

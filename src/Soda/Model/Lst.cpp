@@ -63,6 +63,18 @@ Model *Lst::attr( int index ) const {
     return _data[ index ];
 }
 
+bool Lst::_set( int size, Vec<Model *> &model_stack, Vec<String> &string_stack ) {
+    Vec<Model *> tmp;
+    int o = model_stack.size() - size;
+    for( int i = 0; i < size; ++i )
+        tmp << model_stack[ o + i ];
+    model_stack.resize( o );
+    if ( _data == tmp )
+        return false;
+    _data = tmp;
+    return true;
+}
+
 bool Lst::_set( const TmpModelMap &mm, StringBlk n ) {
     Vec<Model *> tmp;
     while ( StringBlk p = n.split( ',' ) )

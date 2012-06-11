@@ -49,6 +49,12 @@ bool Bool::_set( const TmpModelMap &mm, StringBlk data ) {
     return res;
 }
 
+bool Bool::_set( PI64 data ) {
+    bool res = _data != data;
+    _data = data;
+    return res;
+}
+
 void Bool::_map_ptr( const MapRead &map_read ) {
     rights = map_read[ rights ];
 }

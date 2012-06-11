@@ -20,6 +20,8 @@ public:
     virtual Nstring type() const;
 
     virtual bool _set( const TmpModelMap &mm, StringBlk data );
+    virtual bool _set( const char *str, int len );
+
     virtual void _map_ptr( const MapRead &map_read );
 
     std::string _data;

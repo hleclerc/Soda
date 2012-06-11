@@ -82,6 +82,22 @@ void Model::_sweeper_rec( Sweeper &s ) {
     }
 }
 
-bool Model::_set( SI64 man, SI32 exp ) {
+bool Model::_set( int info, Vec<Model *> &model_stack, Vec<String> &string_stack ) {
+    return false;
+}
+
+bool Model::_set( const char *str, int len ) {
+    return false;
+}
+
+bool Model::_set( SI64 a, SI32 b ) {
+    return false;
+}
+
+bool Model::_set( Model *m ) {
+    return false;
+}
+
+bool Model::_set( SI64 a ) {
     return false;
 }

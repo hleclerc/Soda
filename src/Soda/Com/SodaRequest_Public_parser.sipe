@@ -10,17 +10,29 @@ cmd_load_ptr    = 'l' uint32_bin_le[ v ] uint64_bin_le[ m, __type__ = 'PI64' ] {
 cmd_load        = 'L' uint32_bin_le[ v ] str_32[ l, s ] { cmd_load( sipe_data->v, sipe_data->s.data(), sipe_data->l ); }
 cmd_end         = 'E' { cmd_end(); }
 
-#cmd_update_PI32 = 'U' uint64_bin_le[ model_id ] uint32_bin_le[ len ] { rep_update_PI32( sipe_data->model_id, sipe_data->len ); }
-#cmd_update_PI64 = 'V' uint64_bin_le[ model_id ] uint64_bin_le[ ptr ] { rep_update_PI64( sipe_data->model_id, sipe_data->ptr ); }
-#cmd_update_cstr = 'W' uint64_bin_le[ model_id ] str_32[ len, str ] { rep_update_cstr( sipe_data->model_id, sipe_data->str.data(), sipe_data->len ); }
-cmd_update_6432 = 'X' uint64_bin_le[ model_id, __type__ = 'PI64' ] int64_bin_le[ ptr, __type__ = 'SI64' ] uint32_bin_le[ len ] { cmd_update_6432( sipe_data->model_id, sipe_data->ptr, sipe_data->len ); }
-#cmd_update_PI8  = 'Y' uint64_bin_le[ model_id ] uint8_bin_le[ pi8 ] { rep_update_PI8( sipe_data->model_id, sipe_data->pi8 ); }
-#cmd_push_string = 'p' str_32[ len, str ] { rep_push_string( sipe_data->str.data(), sipe_data->len ); }
-#cmd_push_model  = 'P' uint64_bin_le[ model_id ] { rep_push_model( sipe_data->model_id ); }
+PI64[ __mid__ ] = uint64_bin_le[ __mid__, __type__ = 'PI64' ]
+PI32[ __mid__ ] = uint32_bin_le[ __mid__, __type__ = 'PI32' ]
+PI8 [ __mid__ ] = uint8_bin_le[ __mid__ ]
+ST32[ __mid__ ] = str_32[ len, str ]
+
+
+cmd_update_PI32 = 'U' PI64[ model_id ] PI32[ len ] { cmd_update_PI32( sipe_data->model_id, sipe_data->len ); }
+cmd_update_PI64 = 'V' PI64[ model_id ] PI64[ ptr ] { cmd_update_PI64( sipe_data->model_id, sipe_data->ptr ); }
+cmd_update_cstr = 'W' PI64[ model_id ] ST32[ len, str ] { cmd_update_cstr( sipe_data->model_id, sipe_data->str.data(), sipe_data->len ); }
+cmd_update_6432 = 'X' PI64[ model_id ] PI64[ man ] PI32[ exp ] { cmd_update_6432( sipe_data->model_id, sipe_data->man, sipe_data->exp ); }
+cmd_update_PI8  = 'Y' PI64[ model_id ] PI8 [ pi8 ] { cmd_update_PI8( sipe_data->model_id, sipe_data->pi8 ); }
+cmd_push_string = 'p' ST32[ len, str ] { cmd_push_string( sipe_data->str.data(), sipe_data->len ); }
+cmd_push_model  = 'P' PI64[ model_id ] { cmd_push_model( sipe_data->model_id ); }
 
 
 main = (
+    cmd_update_PI32 |
+    cmd_update_PI64 |
+    cmd_update_cstr |
     cmd_update_6432 |
+    cmd_update_PI8 |
+    cmd_push_string |
+    cmd_push_model |
     cmd_reg_type |
     cmd_load_ptr |
     cmd_load |

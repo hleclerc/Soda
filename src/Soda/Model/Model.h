@@ -85,9 +85,16 @@ public:
 
 
     virtual bool _set( const TmpModelMap &mm, StringBlk data ) = 0; ///< return true if real change
+    virtual bool _set( int info, Vec<Model *> &model_stack, Vec<String> &string_stack );
+    virtual bool _set( const char *str, int len );
+    virtual bool _set( SI64 a, SI32 b );
+    virtual bool _set( Model *m );
+    virtual bool _set( SI64 a );
+
     virtual void _map_ptr( const MapRead &map_read ) = 0; ///< fake ptrs (from file) to real ptrs
     virtual void _sweeper_rec( Sweeper &s ); ///<
-    virtual bool _set( SI64 man, SI32 exp );
+
+
 };
 
 #endif // MODEL_H

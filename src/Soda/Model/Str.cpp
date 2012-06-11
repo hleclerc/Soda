@@ -50,6 +50,14 @@ bool Str::_set( const TmpModelMap &mm, StringBlk data ) {
     return res;
 }
 
+bool Str::_set( const char *str, int len ) {
+    std::string tmp( str, str + len );
+    if ( _data == tmp )
+        return false;
+    _data = tmp;
+    return true;
+}
+
 void Str::_map_ptr( const MapRead &map_read ) {
     rights = map_read[ rights ];
 }

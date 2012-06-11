@@ -76,6 +76,27 @@ void ModelWithAttr::write_dmp( BinOut &out ) const {
     }
 }
 
+bool ModelWithAttr::_set( int size, Vec<Model *> &model_stack, Vec<String> &string_stack ) {
+    int os = string_stack.size() - size;
+    int om = model_stack.size() - size;
+
+    Vec<Item> tmp;
+    for( int i = 0; i < size; ++i ) {
+        Item &res = tmp.push_back();
+        res.key = db()->nstring_list( string_stack[ os + i ].data(), string_stack[ os + i ].size() );
+        res.val = model_stack[ om + i ];
+    }
+
+    model_stack.resize( om );
+    string_stack.resize( os );
+
+    if ( _data == tmp )
+        return false;
+    _data = tmp;
+    return true;
+}
+
+
 bool ModelWithAttr::_set( const TmpModelMap &mm, StringBlk data ) {
     Vec<Item> tmp;
     while ( StringBlk p = data.split( ',' ) ) {
