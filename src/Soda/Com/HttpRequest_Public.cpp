@@ -76,7 +76,8 @@ int HttpRequest_Public::send_all() {
 //
 void HttpRequest_Public::cmd_creation( const String &type, ST tmp_id ) {
     if ( session and tmp_id & 3 ) {
-        Model *res = session->factory( session->db->nstring_list( type.c_str() ) );
+        Nstring t = session->db->nstring_list( type.c_str() );
+        Model *res = session->factory( t, t );
         out << "FileSystem._tmp_id_to_real( " << tmp_id << ", " << res << " );\n";
         tmp_map.data[ tmp_id ] = res;
     }

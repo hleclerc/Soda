@@ -98,6 +98,6 @@ bool Model::_set( Model *m ) {
     return false;
 }
 
-bool Model::_set( SI64 a ) {
+bool Model::_set( PI64 a ) {
     return false;
 }

@@ -6,6 +6,7 @@
 
 SodaRequest_Public::SodaRequest_Public( int fd, ServerLoop *loop ) : EventObj_WO( fd ), loop( loop ) {
     session = loop->database->session_allocator.factory( loop->database, loop->database->root_usr, this );
+    tmp_map.session = session;
 }
 
 SodaRequest_Public::~SodaRequest_Public() {
@@ -14,56 +15,75 @@ SodaRequest_Public::~SodaRequest_Public() {
 }
 
 void SodaRequest_Public::cmd_update_PI32( PI64 model_id, SI32 info ) {
-    PRINT( __LINE__ );
     if ( session and session->user )
-        if ( Model *m = session->db->model_allocator.check( reinterpret_cast<Model *>( model_id ) ) )
+        if ( Model *m = tmp_map[ model_id ] )
             if ( m->rights.has( session->user, WR ) and m->_set( info, model_stack, string_stack ) )
                 session->db->add_to_mod_list( m, session );
 }
 
 void SodaRequest_Public::cmd_update_PI64( PI64 model_id, PI64 info ) {
-    PRINT( __LINE__ );
     if ( session and session->user )
-        if ( Model *m = session->db->model_allocator.check( reinterpret_cast<Model *>( model_id ) ) )
+        if ( Model *m = tmp_map[ model_id ] )
             if ( m->rights.has( session->user, WR ) and m->_set( info ) )
                 session->db->add_to_mod_list( m, session );
 }
 
 void SodaRequest_Public::cmd_update_PI8 ( PI64 model_id, PI8 info ) {
-    PRINT( __LINE__ );
-    if ( session and session->user )
-        if ( Model *m = session->db->model_allocator.check( reinterpret_cast<Model *>( model_id ) ) )
-            if ( m->rights.has( session->user, WR ) and m->_set( info ) )
+    if ( session and session->user ) {
+        if ( Model *m = tmp_map[ model_id ] ) {
+            if ( m->rights.has( session->user, WR ) and m->_set( (PI64)info ) )
                 session->db->add_to_mod_list( m, session );
+        }
+    }
 }
 
 void SodaRequest_Public::cmd_update_6432( PI64 model_id, SI64 man, SI32 exp ) {
-    PRINT( __LINE__ );
     if ( session and session->user )
-        if ( Model *m = session->db->model_allocator.check( reinterpret_cast<Model *>( model_id ) ) )
+        if ( Model *m = tmp_map[ model_id ] )
             if ( m->rights.has( session->user, WR ) and m->_set( man, exp ) )
                 session->db->add_to_mod_list( m, session );
 }
 
 void SodaRequest_Public::cmd_update_cstr( PI64 model_id, const char *type_str, int type_len ) {
-    PRINT( __LINE__ );
     if ( session and session->user )
-        if ( Model *m = session->db->model_allocator.check( reinterpret_cast<Model *>( model_id ) ) )
+        if ( Model *m = tmp_map[ model_id ] )
             if ( m->rights.has( session->user, WR ) and m->_set( type_str, type_len ) )
                 session->db->add_to_mod_list( m, session );
 }
 
 void SodaRequest_Public::cmd_push_string( const char *str, int len ) {
-    PRINT( String( str, str + len ) );
     string_stack << String( str, str + len );
 }
 
 void SodaRequest_Public::cmd_push_model ( PI64 model_id ) {
-    PRINT( __LINE__ );
-    if ( session and session->user )
-        if ( Model *m = session->db->model_allocator.check( reinterpret_cast<Model *>( model_id ) ) )
-            if ( m->rights.has( session->user, RD ) )
+    if ( session and session->user ) {
+        if ( Model *m = tmp_map[ model_id ] ) {
+            if ( m->rights.has( session->user, RD ) ) {
                 model_stack << m;
+                return;
+            }
+        }
+    }
+    model_stack << (Model *)0;
+}
+
+void SodaRequest_Public::cmd_creation( PI64 tmp_id, const char *type_str, int type_len, const char *type_stu, int type_leu ) {
+    if ( session and tmp_id & 3 ) {
+        Nstring t = session->db->nstring_list( type_str, type_len );
+        Nstring u = session->db->nstring_list( type_stu, type_leu );
+        Model *res = session->factory( u, t );
+        b << 'T' << tmp_id << PI64( res );
+        tmp_map.data[ tmp_id ] = res;
+    }
+}
+
+void SodaRequest_Public::cmd_creation( PI64 tmp_id, const char *type_str, int type_len ) {
+    if ( session and tmp_id & 3 ) {
+        Nstring t = session->db->nstring_list( type_str, type_len );
+        Model *res = session->factory( t, t );
+        b << 'T' << tmp_id << PI64( res );
+        tmp_map.data[ tmp_id ] = res;
+    }
 }
 
 void SodaRequest_Public::cmd_reg_type( int n_callback, const char *type_str, int type_len ) {
@@ -71,9 +91,9 @@ void SodaRequest_Public::cmd_reg_type( int n_callback, const char *type_str, int
         session->db->reg_type( StringBlk( type_str, type_len ), session, n_callback );
 }
 
-void SodaRequest_Public::cmd_load_ptr( int n_callback, PI64 ptr ) {
+void SodaRequest_Public::cmd_load_ptr( int n_callback, PI64 model_id ) {
     if ( session and session->user ) {
-        if ( Model *m = session->db->model_allocator.check( reinterpret_cast<Model *>( ptr ) ) ) {
+        if ( Model *m = tmp_map[ model_id ] ) {
             BinOut c;
             if ( m->write_nsr( b, c, session ) ) { // <- checks rights
                 b << c << 'L' << SI64( m ) << n_callback;
@@ -98,7 +118,6 @@ void SodaRequest_Public::cmd_load( int n_callback, const char *path_str, int pat
 }
 
 void SodaRequest_Public::cmd_end() {
-    PRINT( "end" );
     send();
 }
 

@@ -1,19 +1,20 @@
 #cmd_new_session = 'S ' uint[ v ] ' ' { cmd_new_session( sipe_data->v ); }
 #cmd_set_session = 's ' uint[ v ] ' ' { cmd_set_session( sipe_data->v ); }
-#cmd_creation    = 'N ' uint[ v ] ' ' word[ w ] ' ' { cmd_creation( sipe_data->w, sipe_data->v ); }
 #cmd_load_ptr    = 'l ' uint[ v ] ' ' uint[ u ] ' ' { cmd_load_ptr( sipe_data->v, sipe_data->u ); }
 #cmd_change      = 'C ' uint[ v ] ' ' word[ w ] ' ' { cmd_change( sipe_data->v, sipe_data->w ); }
-
-
-cmd_reg_type    = 'R' uint32_bin_le[ v ] str_32[ l, s ] { cmd_reg_type( sipe_data->v, sipe_data->s.data(), sipe_data->l ); }
-cmd_load_ptr    = 'l' uint32_bin_le[ v ] uint64_bin_le[ m, __type__ = 'PI64' ] { cmd_load_ptr( sipe_data->v, sipe_data->m ); }
-cmd_load        = 'L' uint32_bin_le[ v ] str_32[ l, s ] { cmd_load( sipe_data->v, sipe_data->s.data(), sipe_data->l ); }
-cmd_end         = 'E' { cmd_end(); }
 
 PI64[ __mid__ ] = uint64_bin_le[ __mid__, __type__ = 'PI64' ]
 PI32[ __mid__ ] = uint32_bin_le[ __mid__, __type__ = 'PI32' ]
 PI8 [ __mid__ ] = uint8_bin_le[ __mid__ ]
 ST32[ __mid__ ] = str_32[ len, str ]
+
+cmd_creationud  = 'n' PI64[ model_id ] str_32[ len, str ] str_32[ len2, str2 ] { cmd_creation( sipe_data->model_id, sipe_data->str.data(), sipe_data->len, sipe_data->str2.data(), sipe_data->len2 ); }
+cmd_creation    = 'N' PI64[ model_id ] str_32[ len, str ] { cmd_creation( sipe_data->model_id, sipe_data->str.data(), sipe_data->len ); }
+cmd_reg_type    = 'R' PI32[ v ] str_32[ l, s ] { cmd_reg_type( sipe_data->v, sipe_data->s.data(), sipe_data->l ); }
+cmd_load_ptr    = 'l' PI32[ v ] PI64[ m ] { cmd_load_ptr( sipe_data->v, sipe_data->m ); }
+cmd_load        = 'L' PI32[ v ] str_32[ l, s ] { cmd_load( sipe_data->v, sipe_data->s.data(), sipe_data->l ); }
+cmd_end         = 'E' { cmd_end(); }
+
 
 
 cmd_update_PI32 = 'U' PI64[ model_id ] PI32[ len ] { cmd_update_PI32( sipe_data->model_id, sipe_data->len ); }
@@ -33,6 +34,8 @@ main = (
     cmd_update_PI8 |
     cmd_push_string |
     cmd_push_model |
+    cmd_creationud |
+    cmd_creation |
     cmd_reg_type |
     cmd_load_ptr |
     cmd_load |

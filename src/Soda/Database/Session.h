@@ -25,7 +25,7 @@ public:
     virtual void end_round(); ///<
 
     Model *factory( BinInp &inp, int t, RightSet rights );
-    Model *factory( Nstring type );
+    Model *factory( Nstring type, Nstring underlying );
 
     Model *operator[]( StringBlk path );
 

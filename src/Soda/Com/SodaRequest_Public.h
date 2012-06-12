@@ -1,6 +1,7 @@
 #ifndef SODAREQUEST_PUBLIC_H
 #define SODAREQUEST_PUBLIC_H
 
+#include "../Database/TmpModelMap.h"
 #include <Celo/EventObj_WO.h>
 #include "../Sys/BinOut.h"
 #include "../Sys/Stream.h"
@@ -31,8 +32,10 @@ protected:
     void cmd_push_string( const char *str, int len ); ///<
     void cmd_push_model ( PI64 m ); ///<
 
+    void cmd_creation( PI64 tmp_id, const char *type_str, int type_len, const char *type_stu, int type_leu );
+    void cmd_creation( PI64 tmp_id, const char *type_str, int type_len );
     void cmd_reg_type( int n_callback, const char *type_str, int type_len );
-    void cmd_load_ptr( int n_callback, PI64 ptr );
+    void cmd_load_ptr( int n_callback, PI64 model_id );
     void cmd_load( int n_callback, const char *path_str, int path_len );
     void cmd_end();
 
@@ -40,6 +43,7 @@ protected:
     #define SIPE_CLASS
     #include "SodaRequest_Public_parser.h"
 
+    TmpModelMap  tmp_map;
     SodaSession *session;
     ServerLoop  *loop;
     Vec<Model *> model_stack;

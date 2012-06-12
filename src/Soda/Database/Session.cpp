@@ -50,9 +50,10 @@ Model *Session::factory( BinInp &inp, int t, RightSet rights ) {
     return 0;
 }
 
-Model *Session::factory( Nstring type ) {
-    #define DECL( M ) if ( type == NSTRING_##M ) { \
+Model *Session::factory( Nstring type, Nstring underlying ) {
+    #define DECL( M ) if ( underlying == NSTRING_##M ) { \
         M *res = db->model_allocator.factory( default_rights, default_watching_sessions ); \
+        res->_js_type = type; \
         return db->add_to_new_mod_list( res, this, type ); \
     }
     #include "../Model/Model_decl.h"

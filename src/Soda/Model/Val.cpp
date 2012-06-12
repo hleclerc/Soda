@@ -120,6 +120,7 @@ bool Val::_set( SI64 a, SI32 b ) {
     if ( a != man or b != exp ) {
         man = a;
         exp = b;
+        // PRINT( man * pow( 10.0, exp ) );
         return true;
     }
     return false;

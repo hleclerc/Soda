@@ -77,6 +77,9 @@ void ModelWithAttr::write_dmp( BinOut &out ) const {
 }
 
 bool ModelWithAttr::_set( int size, Vec<Model *> &model_stack, Vec<String> &string_stack ) {
+    if ( model_stack.size() < size or string_stack.size() < size )
+        return false;
+
     int os = string_stack.size() - size;
     int om = model_stack.size() - size;
 
@@ -85,6 +88,11 @@ bool ModelWithAttr::_set( int size, Vec<Model *> &model_stack, Vec<String> &stri
         Item &res = tmp.push_back();
         res.key = db()->nstring_list( string_stack[ os + i ].data(), string_stack[ os + i ].size() );
         res.val = model_stack[ om + i ];
+        if ( not res.val ) {
+            model_stack.resize( om );
+            string_stack.resize( os );
+            return false;
+        }
     }
 
     model_stack.resize( om );
