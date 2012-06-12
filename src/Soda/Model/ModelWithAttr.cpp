@@ -25,6 +25,7 @@ Model *ModelWithAttr::attr( int index ) const {
     return _data[ index ].val;
 }
 
+
 Model *ModelWithAttr::attr( Nstring name ) const {
     for( int i = 0; i < _data.size(); ++i )
         if ( _data[ i ].key == name )
