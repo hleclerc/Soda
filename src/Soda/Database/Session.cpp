@@ -1,4 +1,5 @@
 #include "../Model/ModelWithAttrAndName.h"
+#include "../Model/TypedArray.h"
 #include "../Model/Directory.h"
 #include "../Model/File.h"
 #include "../Model/User.h"

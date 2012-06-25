@@ -89,3 +89,5 @@ src/Soda/Model/Bool.h
 src/Soda/Model/Bool.cpp
 src/Soda/Database/SodaSession.h
 src/Soda/Database/SodaSession.cpp
+src/Soda/Model/TypedArray.h
+src/Soda/Sys/StringBlk.cpp

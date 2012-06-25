@@ -7,3 +7,6 @@ DECL( Val )
 DECL( Ptr )
 DECL( Path )
 DECL( Bool )
+DECL( TypedArray_Float64 )
+DECL( TypedArray_Int32 )
+

@@ -30,30 +30,12 @@ public:
         return str == std::string( _data, _data + _size );
     }
 
-    StringBlk split( char s ) { ///< "toto/tata".split( '/' ) will return toto, and this will be = to tata
-        for( int i = 0; i < _size; ++i ) {
-            if ( _data[ i ] == s ) {
-                StringBlk res( _data, i );
-                _data += i + 1;
-                _size -= i + 1;
-                return res;
-            }
-        }
-        StringBlk res = *this;
-        _size = 0;
-        return res;
-    }
+    StringBlk split( char s ); ///< "toto/tata".split( '/' ) will return toto, and this will be = to tata
 
-    ST atoi() const {
-        ST res = 0;
-        if ( _data[ 0 ] == '-' )
-            for( int i = 1; i < _size and _data[ i ] >= '0' and _data[ i ] <= '9'; ++i )
-                res = 10 * res - ( _data[ i ] - '0' );
-        else
-            for( int i = 0; i < _size and _data[ i ] >= '0' and _data[ i ] <= '9'; ++i )
-                res = 10 * res + ( _data[ i ] - '0' );
-        return res;
-    }
+    ST read_ST(); // atoi with modified _data and _size
+    FP64 read_FP64(); // modified _data and _size
+
+    ST atoi() const;
 
     template<class OS>
     void write_str( OS &out ) const {
