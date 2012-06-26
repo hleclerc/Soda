@@ -91,3 +91,4 @@ src/Soda/Database/SodaSession.h
 src/Soda/Database/SodaSession.cpp
 src/Soda/Model/TypedArray.h
 src/Soda/Sys/StringBlk.cpp
+src/Soda/Sys/BinRd.h

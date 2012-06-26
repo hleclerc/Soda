@@ -5,6 +5,7 @@
 #include "../Sys/UsualStrings.h"
 #include "../Sys/BinOut.h"
 #include "../Sys/BinInp.h"
+#include "../Sys/BinRd.h"
 #include "../Sys/S.h"
 #include "Model.h"
 
@@ -27,7 +28,12 @@ public:
     }
 
     virtual void write_str( Stream &out ) const {
-        TODO;
+        out << '[';
+        for( int i = 0; i < dim(); ++i )
+            out << _size[ i ];
+        out << ']';
+        for( unsigned i = 0; i < _data.size(); ++i )
+            out << _data[ i ];
     }
 
     virtual void write_dmp( BinOut &out ) const {
@@ -51,7 +57,15 @@ public:
     }
 
     virtual bool write_usr( BinOut &nut, BinOut &uut, Session *s ) const {
-        TODO;
+        int ts = sizeof( int ) * ( 1 + _size.size() ) + sizeof( T ) * nb_items();
+        uut << 'W' << PI64( this ) << ts;
+
+        uut << (int)_size.size();
+        for( unsigned i = 0; i < _size.size(); ++i )
+            uut << _size[ i ];
+
+        for( int i = 0; i < nb_items(); ++i )
+            uut << _data[ i ];
         return true;
     }
 
@@ -79,6 +93,20 @@ public:
         return os != _size or od != _data;
     }
 
+    virtual bool _set( const char *str, int len ) {
+        BinRd rd( str, len );
+        int n;
+        rd >> n;
+        _size.resize( n );
+        for( int i = 0; i < n; ++i )
+            rd >> _size[ i ];
+
+        _data.resize( nb_items() );
+        for( int i = 0; i < nb_items(); ++i )
+            rd >> _data[ i ];
+        return true;
+    }
+
     virtual void _map_ptr( const MapRead &map_read ) {
         rights = map_read[ rights ];
     }
@@ -95,6 +123,8 @@ public:
     }
 
     int nb_items() const {
+        if ( not _size.size() )
+            return 0;
         int m = _size[ 0 ];
         for( unsigned i = 1; i < _size.size(); ++i )
             m *= _size[ i ];
